@@ -94,13 +94,17 @@ char	*to_string(char **res, t_format format, va_list *ap)
 		*res = strdup((char *)va_arg(*ap, int));
 		printf("		res : %s\n", *res);
 	}
+	else if (format.type == 'd')
+	{
+		*res = ft_itoa(va_arg(*ap, int));
+	}
 	else
 		printf("undefined format type!\n");
 	len = format.width - ft_strlen(*res);
 	if (len > 0)
 	{
 		printf("length is %d\n", len);
-		if (format.flag['0'])
+		if (format.flag['0'] && !format.flag['-'])
 			ft_setstr(&tmp, format.width - ft_strlen(*res), '0');
 		else
 			ft_setstr(&tmp, format.width - ft_strlen(*res), ' ');
@@ -222,8 +226,10 @@ int	main(void)
 	//printf("%0*.*lf\n", 15, 7, a);
 	printf("%+s\n", "12345");
 	//test("%12s\n", "abc");
-	ft_printf("%04sABC%s%%%s\n", "abc", "xxxxx", "!@#");
-	printf("res  : [%04sABC%s%%%s\n]", "abc", "xxxxx", "!@#");
+	ft_printf("%04sABC%s%%%s, <%0-10s>\n", "abc", "xxxxx", "!@#", "123123");
+	printf("res  : [%04sABC%s%%%s, <%0-10s>\n]", "abc", "xxxxx", "!@#", "123123");
+	ft_printf("[%-010d]", 123);
+	printf("[%-010d]", 123);
 	//test("%s,   %+*d, %c\n", "abcdefg", i, i, c);
 	return (0);
 }
