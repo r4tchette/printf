@@ -80,6 +80,29 @@ int		ft_setstr(char **dst, int len, char ch)
 	return (1);
 }
 
+char	convert_to_hex(unsigned int n)
+{
+	if (n < 10)
+		return (n + '0');
+	return (n - 10 + 'A');
+}
+
+void	format_p(char **res, long long addr)
+{
+	int	i;
+
+	*res = ft_calloc(9, sizeof(char));
+	i = 8;
+	while (i > 0)
+	{
+		(*res)[--i] = convert_to_hex(addr % 16);
+		addr /= 16;
+	}
+	//printf("res : %s\n", *res);
+	//write(1, &str, 16);
+	//write(1, &": ", 2);
+}
+
 char	*to_string(char **res, t_format format, va_list *ap)
 {
 	char	*tmp;
@@ -89,10 +112,19 @@ char	*to_string(char **res, t_format format, va_list *ap)
 	{
 		return (strdup("%"));
 	}
+	else if (format.type == 'c')
+	{
+		*res = ft_calloc(2, sizeof(char));
+		(*res)[0] = va_arg(*ap, int);
+	}
 	else if (format.type == 's')
 	{
 		*res = strdup((char *)va_arg(*ap, int));
 		printf("		res : %s\n", *res);
+	}
+	else if (format.type == 'p')
+	{
+		format_p(res, (long long)va_arg(*ap, long long));
 	}
 	else if (format.type == 'd')
 	{
@@ -228,8 +260,11 @@ int	main(void)
 	//test("%12s\n", "abc");
 	ft_printf("%04sABC%s%%%s, <%0-10s>\n", "abc", "xxxxx", "!@#", "123123");
 	printf("res  : [%04sABC%s%%%s, <%0-10s>\n]", "abc", "xxxxx", "!@#", "123123");
-	ft_printf("[%-010d]", 123);
-	printf("[%-010d]", 123);
+	ft_printf("[%-010d]\n", 123);
+	printf("[%-010d]\n", 123);
+	ft_printf("%c%c%c\n", 'a', 'b', 'c');
 	//test("%s,   %+*d, %c\n", "abcdefg", i, i, c);
+	printf("format p : %017p\n", &i);
+	ft_printf("%017p\n", &i);
 	return (0);
 }
