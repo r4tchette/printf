@@ -130,8 +130,17 @@ char	*to_string(char **res, t_format format, va_list *ap)
 	{
 		*res = ft_itoa(va_arg(*ap, int));
 	}
+	else if (format.type == 'u')
+	{
+		*res = ft_ltoa((long long)va_arg(*ap, unsigned int));
+	}
 	else
 		printf("undefined format type!\n");
+	if (format.flag['+'] && (*res)[0] != '-')
+	{
+		if (format.type == 'd' || format.type == 'i')
+			*res = ft_strjoin("+", *res);
+	}
 	len = format.width - ft_strlen(*res);
 	if (len > 0)
 	{
@@ -267,5 +276,7 @@ int	main(void)
 	printf("format p : %017p\n", &i);
 	ft_printf("%017p\n", &i);
 	printf("format i : [%i]\n", 123);
+	ft_printf("%0-+20u", 1);
+	printf("format u : [%0-+20u]\n", 1);
 	return (0);
 }
