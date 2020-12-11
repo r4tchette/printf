@@ -87,17 +87,19 @@ char	convert_to_hex(unsigned int n)
 	return (n - 10 + 'A');
 }
 
-void	format_p(char **res, long long addr)
+char	*format_p(long addr)
 {
-	int	i;
+	char	*res;
+	int		i;
 
-	*res = ft_calloc(9, sizeof(char));
+	res = ft_calloc(9, sizeof(char));
 	i = 8;
 	while (i > 0)
 	{
-		(*res)[--i] = convert_to_hex(addr % 16);
+		res[--i] = convert_to_hex(addr % 16);
 		addr /= 16;
 	}
+	return (res);
 	//printf("res : %s\n", *res);
 	//write(1, &str, 16);
 	//write(1, &": ", 2);
@@ -124,7 +126,7 @@ char	*to_string(char **res, t_format format, va_list *ap)
 	}
 	else if (format.type == 'p')
 	{
-		format_p(res, (long long)va_arg(*ap, long long));
+		*res = format_p((long long)va_arg(*ap, long long));
 	}
 	else if (format.type == 'd' || format.type == 'i')
 	{
@@ -133,6 +135,10 @@ char	*to_string(char **res, t_format format, va_list *ap)
 	else if (format.type == 'u')
 	{
 		*res = ft_ltoa((long long)va_arg(*ap, unsigned int));
+	}
+	else if (format.type == 'x' || format.type == 'X')
+	{
+		*res = ft_xtoa((unsigned int)va_arg(*ap, unsigned int), format.type);
 	}
 	else
 		printf("undefined format type!\n");
@@ -278,5 +284,7 @@ int	main(void)
 	printf("format i : [%i]\n", 123);
 	ft_printf("%0-+20u", 1);
 	printf("format u : [%0-+20u]\n", 1);
+	ft_printf("%x", 1023);
+	printf("format x : [%x]\n", 1023);
 	return (0);
 }

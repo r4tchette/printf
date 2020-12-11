@@ -24,5 +24,6 @@ size_t			ft_strlen(const char *s);
 char			*ft_strjoin(char const *s1, char const *s2);
 char			*ft_itoa(int n);
 char			*ft_ltoa(long long n);
+char			*ft_xtoa(unsigned int n, char c);
 
 #endif

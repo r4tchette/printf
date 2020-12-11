@@ -32,26 +32,6 @@ static size_t	int_len(int n)
 	return (len);
 }
 
-static size_t	ll_len(long long n)
-{
-	size_t	len;
-
-	if (n == 0)
-		return (1);
-	len = 0;
-	if (n < 0)
-	{
-		n /= -10;
-		len += 2;
-	}
-	while (n > 0)
-	{
-		n /= 10;
-		len++;
-	}
-	return (len);
-}
-
 char			*ft_itoa(int n)
 {
 	char	*ptr;
@@ -76,6 +56,26 @@ char			*ft_itoa(int n)
 	return (ptr);
 }
 
+static size_t	ll_len(long long n)
+{
+	size_t	len;
+
+	if (n == 0)
+		return (1);
+	len = 0;
+	if (n < 0)
+	{
+		n /= -10;
+		len += 2;
+	}
+	while (n > 0)
+	{
+		n /= 10;
+		len++;
+	}
+	return (len);
+}
+
 char			*ft_ltoa(long long n)
 {
 	char	*ptr;
@@ -96,6 +96,48 @@ char			*ft_ltoa(long long n)
 	{
 		ptr[--ptr_len] = n % 10 + '0';
 		n /= 10;
+	}
+	return (ptr);
+}
+
+static size_t	x_len(unsigned int n)
+{
+	size_t	len;
+
+	if (n == 0)
+		return (1);
+	len = 0;
+	while (n > 0)
+	{
+		n /= 16;
+		len++;
+	}
+	return (len);
+}
+
+static char		convert_to_hex(unsigned int n, char c)
+{
+	if (n < 10)
+		return (n + '0');
+	if (c == 'x')
+		return (n - 10 + 'a');
+	return (n - 10 + 'A');
+}
+
+char			*ft_xtoa(unsigned int n, char c)
+{
+	char	*ptr;
+	size_t	ptr_len;
+
+	ptr_len = x_len(n);
+	if (!(ptr = (char *)ft_calloc(ptr_len + 1, sizeof(char))))
+		return (NULL);
+	if (n == 0)
+		ptr[0] = '0';
+	while (n > 0)
+	{
+		ptr[--ptr_len] = convert_to_hex(n % 16, c);
+		n /= 16;
 	}
 	return (ptr);
 }
