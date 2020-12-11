@@ -126,7 +126,7 @@ char	*to_string(char **res, t_format format, va_list *ap)
 	{
 		format_p(res, (long long)va_arg(*ap, long long));
 	}
-	else if (format.type == 'd')
+	else if (format.type == 'd' || format.type == 'i')
 	{
 		*res = ft_itoa(va_arg(*ap, int));
 	}
@@ -266,5 +266,6 @@ int	main(void)
 	//test("%s,   %+*d, %c\n", "abcdefg", i, i, c);
 	printf("format p : %017p\n", &i);
 	ft_printf("%017p\n", &i);
+	printf("format i : [%i]\n", 123);
 	return (0);
 }
