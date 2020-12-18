@@ -76,7 +76,7 @@ int		ft_setstr(char **dst, int len, char ch)
 		(*dst)[i] = ch;
 		i++;
 	}
-	printf("tmp is %s\n", *dst);
+	//printf("tmp is %s\n", *dst);
 	return (1);
 }
 
@@ -122,7 +122,6 @@ char	*to_string(char **res, t_format format, va_list *ap)
 	else if (format.type == 's')
 	{
 		*res = strdup((char *)va_arg(*ap, int));
-		printf("		res : %s\n", *res);
 	}
 	else if (format.type == 'p')
 	{
@@ -150,12 +149,10 @@ char	*to_string(char **res, t_format format, va_list *ap)
 	len = format.width - ft_strlen(*res);
 	if (len > 0)
 	{
-		printf("length is %d\n", len);
 		if (format.flag['0'] && !format.flag['-'])
 			ft_setstr(&tmp, format.width - ft_strlen(*res), '0');
 		else
 			ft_setstr(&tmp, format.width - ft_strlen(*res), ' ');
-		printf("tmp is %s\n", tmp);
 		if (format.flag['-'])
 			*res = ft_strjoin(*res, tmp);
 		else
@@ -176,14 +173,13 @@ char	*parse_format(char **res, char *str, va_list *ap)
 	i = 0;
 	while (str[i])
 	{
-		printf("'%c'", str[i]);
 		if (is_type(str[i]))
 		{
 			format.type = str[i];
 			return (to_string(res, format, ap));
 		}
 		else if (is_flag(str[i]))
-			format.flag[str[i]] = 1;
+			format.flag[(int)str[i]] = 1;
 		else if (str[i] == '*')
 		{
 			format.width = (int)va_arg(*ap, int);
@@ -196,7 +192,6 @@ char	*parse_format(char **res, char *str, va_list *ap)
 				format.width += str[i] - '0';
 				i++;
 			}
-			printf("format width : %d\n", format.width);
 			i--;
 		}
 		else if (str[i] == '.')
@@ -221,70 +216,101 @@ char	*parse_format(char **res, char *str, va_list *ap)
 	return (NULL);
 }
 
+int		expand_string(char **buf, size_t *buf_size, size_t new_size)
+{
+	char	*tmp;
+
+	if (*buf_size < new_size)
+	{
+		tmp = ft_strdup(*buf);
+		free(*buf);
+		*buf_size *= 2;
+		if (!(*buf = ft_calloc(*buf_size, sizeof(char))))
+			return (0);
+		ft_strlcpy(*buf, tmp, ft_strlen(tmp) + 1);
+		free(tmp);
+	}
+	return (1);
+}
+
+int		init_buf(char **buf, size_t *buf_size, int *i)
+{
+	*buf_size = 1024;
+	if (!(*buf = ft_calloc(*buf_size, sizeof(char))))
+		return (0);
+	*i = -1;
+	return (1);
+}
+
+int		print_buf(char **buf, va_list *ap)
+{
+	int	buf_len;
+
+	buf_len = ft_strlen(*buf);
+	printf("%s", *buf);
+	free(*buf);
+	va_end(*ap);
+	return (buf_len);
+}
+
 int		ft_printf(char *str, ...)
 {
 	va_list	ap;
-	int		i;
-	int		size;
+	size_t	buf_size;
 	char	*buf;
 	char	*tmp;
+	int		i;
 
-	size = 1024;
-	buf = ft_calloc(size, sizeof(char));
+	if (!(init_buf(&buf, &buf_size, &i)))
+		return (-1);
 	va_start(ap, str);
-	i = 0;
-	while (str[i])
+	while (str[++i])
 	{
 		if (str[i] == '%')
 		{
-			printf("\nparse_format(%c) : ", str[i]);
-			if (parse_format(&tmp, &str[i + 1], &ap))
-				printf("[%s(%d)]", tmp, ft_strlen(tmp));
-			else
-				return (0);
+			if (!(parse_format(&tmp, &str[i + 1], &ap)))
+				return (-1);
+			if (buf_size < ft_strlen(buf) + ft_strlen(tmp) + 1)
+				expand_string(&buf, &buf_size, ft_strlen(buf) + ft_strlen(tmp) + 1);
 			ft_strlcat(buf, tmp, ft_strlen(buf) + ft_strlen(tmp) + 1);
 			free(tmp);
 			while (!is_type(str[++i]));
 		}
 		else
-		{
-			printf("%c", str[i]);
 			ft_strlcat(buf, str + i, ft_strlen(buf) + 2);
-		}
-		i++;
 	}
-	printf("\n<< result >>\n");
-	printf("buf  : [%s]\n", buf);
-	printf("size : [%d]\n", ft_strlen(buf));
-	va_end(ap);
-	return (0);
+	return (print_buf(&buf, &ap));
 }
 
 int	main(void)
 {
-	int		i;
-	char	c;
-	double	a;
+	int	i;
+	int	n;
 
-	i = 1;
-	c = 'c';
-	a = 3.141592653;
+	i = 12345;
+	n = 314;
 	//ft_printf("%d, %c\n", i, c);
 	//printf("%0*.*lf\n", 15, 7, a);
-	printf("%+s\n", "12345");
+	printf("   printf : [%12s]\n", "12345");
+	ft_printf("ft_printf : [%12s]\n", "12345");
 	//test("%12s\n", "abc");
-	ft_printf("%04sABC%s%%%s, <%0-10s>\n", "abc", "xxxxx", "!@#", "123123");
-	printf("res  : [%04sABC%s%%%s, <%0-10s>\n]", "abc", "xxxxx", "!@#", "123123");
-	ft_printf("[%-010d]\n", 123);
-	printf("[%-010d]\n", 123);
+	printf("   printf[%4sABC%s%%%s, <%-1s>]\n", "abc", "xxxxx", "!@#", "123123");
+	ft_printf("ft_printf[%4sABC%s%%%s, <%-1s>]\n", "abc", "xxxxx", "!@#", "123123");
+	printf("[%4sABC%s%%%s, <%-1s>]\n", "abc", "xxxxx", "!@#", "123123");
+	ft_printf("[%4sABC%s%%%s, <%-1s>]\n", "abc", "xxxxx", "!@#", "123123");
+	ft_printf("[%-10d]\n", 123);
+	printf("[%-10d]\n", 123);
 	ft_printf("%c%c%c\n", 'a', 'b', 'c');
 	//test("%s,   %+*d, %c\n", "abcdefg", i, i, c);
-	printf("format p : %017p\n", &i);
-	ft_printf("%017p\n", &i);
+	printf("format p : %17p\n", &i);
+	ft_printf("format p : %17p\n", &i);
 	printf("format i : [%i]\n", 123);
-	ft_printf("%0-+20u", 1);
-	printf("format u : [%0-+20u]\n", 1);
-	ft_printf("%x", 1023);
+	ft_printf("format i : %0-+20u", 1);
+	printf("format u : [%-20u]\n", 1);
+	ft_printf("format u : %x", 1023);
 	printf("format x : [%x]\n", 1023);
+	n = printf("format x : format %%n %n\n", &i);
+	printf("\nreturn value : [%d], i is [%d]\n", n, i);
+	printf("format %%f : %f\n", 3.141592);
 	return (0);
 }
