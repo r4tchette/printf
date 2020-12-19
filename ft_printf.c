@@ -159,8 +159,6 @@ char	*to_string(char **res, t_format format, va_list *ap)
 			*res = ft_strjoin(tmp, *res);
 	}
 	free(tmp);
-
-	//format.flag['-']
 	return (*res);
 }
 
