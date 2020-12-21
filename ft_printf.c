@@ -100,9 +100,33 @@ char	*format_p(long addr)
 		addr /= 16;
 	}
 	return (res);
-	//printf("res : %s\n", *res);
-	//write(1, &str, 16);
-	//write(1, &": ", 2);
+}
+
+int		format_type(char **res, char type, va_list *ap)
+{
+	if (type == '%')
+		*res = ft_strdup("%");
+	else if (type == 'c')
+	{
+		if (!(*res = ft_calloc(2, sizeof(char))))
+			return (0);
+		(*res)[0] = (char)va_arg(*ap, int);
+	}
+	else if (type == 's')
+		*res = ft_strdup((char *)va_arg(*ap, int));
+	else if (type == 'p')
+		*res = format_p((long long)va_arg(*ap, long long));
+	else if (type == 'd' || type == 'i')
+		*res = ft_itoa(va_arg(*ap, int));
+	else if (type == 'u')
+		*res = ft_ltoa((long long)va_arg(*ap, unsigned int));
+	else if (type == 'x' || type == 'X')
+		*res = ft_xtoa((unsigned int)va_arg(*ap, unsigned int), type);
+	else
+		printf("undefined format type!\n");
+	if (!(*res))
+		return (0);
+	return (1);
 }
 
 char	*to_string(char **res, t_format format, va_list *ap)
@@ -110,42 +134,10 @@ char	*to_string(char **res, t_format format, va_list *ap)
 	char	*tmp;
 	int		len;
 
-	if (format.type == '%')
-	{
-		return (strdup("%"));
-	}
-	else if (format.type == 'c')
-	{
-		*res = ft_calloc(2, sizeof(char));
-		(*res)[0] = va_arg(*ap, int);
-	}
-	else if (format.type == 's')
-	{
-		*res = strdup((char *)va_arg(*ap, int));
-	}
-	else if (format.type == 'p')
-	{
-		*res = format_p((long long)va_arg(*ap, long long));
-	}
-	else if (format.type == 'd' || format.type == 'i')
-	{
-		*res = ft_itoa(va_arg(*ap, int));
-	}
-	else if (format.type == 'u')
-	{
-		*res = ft_ltoa((long long)va_arg(*ap, unsigned int));
-	}
-	else if (format.type == 'x' || format.type == 'X')
-	{
-		*res = ft_xtoa((unsigned int)va_arg(*ap, unsigned int), format.type);
-	}
-	else
-		printf("undefined format type!\n");
+	format_type(res, format.type, ap);
 	if (format.flag['+'] && (*res)[0] != '-')
-	{
 		if (format.type == 'd' || format.type == 'i')
 			*res = ft_strjoin("+", *res);
-	}
 	len = format.width - ft_strlen(*res);
 	if (len > 0)
 	{
@@ -157,9 +149,45 @@ char	*to_string(char **res, t_format format, va_list *ap)
 			*res = ft_strjoin(*res, tmp);
 		else
 			*res = ft_strjoin(tmp, *res);
+		free(tmp);
 	}
-	free(tmp);
 	return (*res);
+}
+
+int		get_width(t_format *format, int *i, char *str, va_list *ap)
+{
+	if (str[(*i)] == '*')
+		(*format).width = (int)va_arg(*ap, int);
+	else if (is_num(str[(*i)]) && str[(*i)] != '0')
+	{
+		while(is_num(str[(*i)]))
+		{
+			(*format).width *= 10;
+			(*format).width += str[(*i)] - '0';
+			(*i)++;
+		}
+		(*i)--;
+	}
+	else
+		return (0);
+	return (1);
+}
+
+int		get_precision(t_format *format, int *i, char *str, va_list *ap)
+{
+	(*i)++;
+	if (str[(*i)] == '*')
+		(*format).precision = va_arg(*ap, int);
+	else if (is_num(str[(*i)]))
+		while(is_num(str[(*i)]))
+		{
+			(*format).width *= 10;
+			(*format).width += str[(*i)] - '0';
+			(*i)++;
+		}
+	else
+		return (0);
+	return (1);
 }
 
 char	*parse_format(char **res, char *str, va_list *ap)
@@ -168,8 +196,8 @@ char	*parse_format(char **res, char *str, va_list *ap)
 	int			i;
 
 	init_format(&format);
-	i = 0;
-	while (str[i])
+	i = -1;
+	while (str[++i])
 	{
 		if (is_type(str[i]))
 		{
@@ -178,38 +206,10 @@ char	*parse_format(char **res, char *str, va_list *ap)
 		}
 		else if (is_flag(str[i]))
 			format.flag[(int)str[i]] = 1;
-		else if (str[i] == '*')
-		{
-			format.width = (int)va_arg(*ap, int);
-		}
-		else if (is_num(str[i]) && str[i] != '0')
-		{
-			while(is_num(str[i]))
-			{
-				format.width *= 10;
-				format.width += str[i] - '0';
-				i++;
-			}
-			i--;
-		}
+		else if ((str[i] == '*') || (is_num(str[i]) && str[i] != '0'))
+			get_width(&format, &i, str, ap);
 		else if (str[i] == '.')
-		{
-			i++;
-			if (str[i] == '*')
-			{
-				format.precision = va_arg(*ap, int);
-			}
-			else
-			{
-				while(is_num(str[i]))
-				{
-					format.width *= 10;
-					format.width += str[i] - '0';
-					i++;
-				}
-			}
-		}
-		i++;
+			get_precision(&format, &i, str, ap);
 	}
 	return (NULL);
 }
@@ -287,23 +287,23 @@ int	main(void)
 
 	i = 12345;
 	n = 314;
-	//ft_printf("%d, %c\n", i, c);
-	//printf("%0*.*lf\n", 15, 7, a);
 	printf("   printf : [%12s]\n", "12345");
 	ft_printf("ft_printf : [%12s]\n", "12345");
-	//test("%12s\n", "abc");
 	printf("   printf[%4sABC%s%%%s, <%-1s>]\n", "abc", "xxxxx", "!@#", "123123");
 	ft_printf("ft_printf[%4sABC%s%%%s, <%-1s>]\n", "abc", "xxxxx", "!@#", "123123");
 	printf("[%4sABC%s%%%s, <%-1s>]\n", "abc", "xxxxx", "!@#", "123123");
 	ft_printf("[%4sABC%s%%%s, <%-1s>]\n", "abc", "xxxxx", "!@#", "123123");
-	ft_printf("[%-10d]\n", 123);
 	printf("[%-10d]\n", 123);
-	ft_printf("%c%c%c\n", 'a', 'b', 'c');
-	//test("%s,   %+*d, %c\n", "abcdefg", i, i, c);
-	printf("format p : %17p\n", &i);
-	ft_printf("format p : %17p\n", &i);
+	ft_printf("[%-10d]\n", 123);
+	printf("format c : [%c%c%c]\n", 'a', 'b', 'c');
+	
+	ft_printf("format c : []\n");
+	ft_printf("format c : [%c]\n", 'a');
+	ft_printf("format c : [%c%c%c]\n", 'a', 'b', 'c');
+	printf("format p : [%17p]\n", &i);
+	ft_printf("format p : [%17p]\n", &i);
 	printf("format i : [%i]\n", 123);
-	ft_printf("format i : %0-+20u", 1);
+	ft_printf("format i : %0-+20u\n", 1);
 	printf("format u : [%-20u]\n", 1);
 	ft_printf("format u : %x", 1023);
 	printf("format x : [%x]\n", 1023);
