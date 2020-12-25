@@ -21,7 +21,7 @@ B_SRC =	ft_bzero.c\
 OBJ = $(SRC:.c=.o)
 B_OBJ = $(B_SRC:.c=.o)
 
-NAME = libft.a
+NAME = libftprintf.a
 CC = gcc
 CFLAG = -Wall -Werror -Wextra
 AR = ar rcs
