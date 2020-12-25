@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 13:44:30 by yeonkim           #+#    #+#             */
-/*   Updated: 2020/11/19 13:44:30 by yeonkim          ###   ########.fr       */
+/*   Updated: 2020/12/25 13:47:51 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ int		format_type(char **res, char type, va_list *ap)
 		(*res)[0] = (char)va_arg(*ap, int);
 	}
 	else if (type == 's')
-		*res = ft_strdup((char *)va_arg(*ap, int));
+		*res = ft_strdup((char *)va_arg(*ap, char *));
 	else if (type == 'p')
 		*res = format_p((long long)va_arg(*ap, long long));
 	else if (type == 'd' || type == 'i')
@@ -280,6 +280,7 @@ int		ft_printf(char *str, ...)
 	return (print_buf(&buf, &ap));
 }
 
+/*
 int	main(void)
 {
 	int	i;
@@ -296,7 +297,7 @@ int	main(void)
 	printf("[%-10d]\n", 123);
 	ft_printf("[%-10d]\n", 123);
 	printf("format c : [%c%c%c]\n", 'a', 'b', 'c');
-	
+
 	ft_printf("format c : []\n");
 	ft_printf("format c : [%c]\n", 'a');
 	ft_printf("format c : [%c%c%c]\n", 'a', 'b', 'c');
@@ -312,3 +313,4 @@ int	main(void)
 	printf("format %%f : %f\n", 3.141592);
 	return (0);
 }
+*/

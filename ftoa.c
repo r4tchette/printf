@@ -51,9 +51,11 @@ char *ftoa(float value, int decimals, char *buf) {
         return buf;
 }
 
+/*
 int main() {
         char buf[128];
         printf("Result %s\n", itoa(1234, buf));
         for (int i = 0; i < 128; buf[i]='x', i++);
         printf("Result %s\n", ftoa(-1234.999, 8, buf));
 }
+*/
