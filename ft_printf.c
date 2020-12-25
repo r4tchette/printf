@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 13:44:30 by yeonkim           #+#    #+#             */
-/*   Updated: 2020/12/25 13:47:51 by yeonkim          ###   ########.fr       */
+/*   Updated: 2020/12/25 15:50:05 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,19 @@ char	*format_p(long addr)
 	return (res);
 }
 
+char	*format_s(va_list *ap)
+{
+	char	*src;
+	char	*dst;
+
+	src = (char *)va_arg(*ap, char *);
+	if (!src)
+		dst = ft_strdup("(null)");
+	else
+		dst = ft_strdup(src);
+	return (dst);
+}
+
 int		format_type(char **res, char type, va_list *ap)
 {
 	if (type == '%')
@@ -113,7 +126,8 @@ int		format_type(char **res, char type, va_list *ap)
 		(*res)[0] = (char)va_arg(*ap, int);
 	}
 	else if (type == 's')
-		*res = ft_strdup((char *)va_arg(*ap, char *));
+		*res = format_s(ap);
+		//*res = ft_strdup((char *)va_arg(*ap, char *));
 	else if (type == 'p')
 		*res = format_p((long long)va_arg(*ap, long long));
 	else if (type == 'd' || type == 'i')
