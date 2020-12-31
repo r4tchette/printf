@@ -38,7 +38,7 @@ int		is_num(char c)
 int		is_flag(char c)
 {
 	if (c == '-' || c == '+' || c == ' ' ||\
-		c == '0' ||	c == '#' || c == '.')
+		c == '#' || c == '.')
 		return (1);
 	return (0);
 }
@@ -59,8 +59,9 @@ void	init_format(t_format *format)
 	format->flag[' '] = 0;
 	format->flag['0'] = 0;
 	format->flag['#'] = 0;
+	format->flag['.'] = 0;
 	format->width = 0;
-	format->precision = 0;
+	format->precision = -1;
 	format->type = 0;
 }
 
@@ -202,9 +203,9 @@ char	*c_to_str(t_format format, va_list *ap)
 	if (!(res = ft_calloc(2, sizeof(char))))
 		return (0);
 	res[0] = (char)va_arg(*ap, int);
-	printf("format width : %d\n", format.width);
-	printf("format precision : %d\n", format.precision);
-	printf("res : <%s>\n", res);
+	//printf("format width : %d\n", format.width);
+	//printf("format precision : %d\n", format.precision);
+	//printf("res : <%s>\n", res);
 	if (format.width < 0)
 	{
 		format.flag['-'] = 1;
@@ -220,18 +221,41 @@ char	*c_to_str(t_format format, va_list *ap)
 	return (res);
 }
 
+char	*s_to_str(t_format format, va_list *ap)
+{
+	char	*ptr;
+	char	*str;
+	char	*res;
+
+	//printf("precision : %d\n", format.precision);
+	if (!(ptr = va_arg(*ap, char *)))
+		str = ft_strdup("(null)");
+	else
+		str = ft_strdup(ptr);
+	if (format.precision != -1 && format.precision < ft_strlen(str))
+	{
+		res = ft_calloc(format.precision + 1, sizeof(char));
+		ft_strlcpy(res, str, format.precision + 1);
+		free(str);
+		return (res);
+	}
+	res = str;
+	return (res);
+}
+
 char	*to_str(t_format format, va_list *ap)
 {
 	char	*res;
 
+	//printf("width : %d\n, precision : %d\n", format.width, format.precision);
 	res = NULL;
 	if (format.type == '%')
 		res = ft_strdup("%");
 	else if (format.type == 'c')
 		res = c_to_str(format, ap);
-		/*
 	else if (format.type == 's')
-		*res = s_to_str(format, ap);
+		res = s_to_str(format, ap);
+/*
 	else if (format.type == 'p')
 		*res = p_to_str(format, ap);
 	else if (format.type == 'd' || format.type == 'i')
@@ -240,7 +264,7 @@ char	*to_str(t_format format, va_list *ap)
 		*res = u_to_str(format, ap);
 	else if (format.type == 'x' || format.type == 'X')
 		*res = x_to_str(format, ap);
-		*/
+*/
 	else
 		printf("undefined format type!\n");
 
@@ -261,11 +285,6 @@ int		get_width(t_format *format, int *idx, char *str, va_list *ap)
 		width = (int)va_arg(*ap, int);
 		i++;
 	}
-	else if (str[i] != '0')
-	{
-		(*format).flag['0'] = 1;
-		i++;
-	}
 	else if (is_num(str[i]))
 	{
 		while(is_num(str[i]))
@@ -276,31 +295,39 @@ int		get_width(t_format *format, int *idx, char *str, va_list *ap)
 	}
 	else
 		return (0);
-	(*format).width = width;
+	format->width = width;
 	*idx = i;
-	printf("index after get_width : %c(%d)\n", str[i], i);
+	//printf("index after get_width : %c(%d)\n", str[i], i);
 	return (1);
 }
 
-int		get_precision(t_format *format, int *i, char *str, va_list *ap)
+int		get_precision(t_format *format, int *idx, char *str, va_list *ap)
 {
-	(*i)++;
-	printf("get precison \n");
-	if (str[(*i)] == '*')
-		(*format).precision = (int)va_arg(*ap, int);
-	else if (is_num(str[(*i)]))
-		while(is_num(str[(*i)]) && str[(*i)])
+	int	precision;
+	int	i;
+
+	precision = 0;
+	i = *idx;
+	if (str[i] == '*')
+	{
+		precision = (int)va_arg(*ap, int);
+		i++;
+	}
+	else if (is_num(str[i]))
+		while(is_num(str[i]) && str[i])
 		{
-			(*format).precision *= 10;
-			(*format).precision += str[(*i)] - '0';
-			(*i)++;
+			precision *= 10;
+			precision += str[i] - '0';
+			i++;
 		}
 	else
 		return (0);
+	format->precision = precision;
+	*idx = i;
 	return (1);
 }
 
-char	*parse_format(char *str, va_list *ap)
+char	*parse_format2(char *str, va_list *ap)
 {
 	t_format	format;
 	int			i;
@@ -322,6 +349,38 @@ char	*parse_format(char *str, va_list *ap)
 		else if (str[i] == '.' && !format.precision)
 			get_precision(&format, &i, str, ap);
 	}
+	return (0);
+}
+
+char	*parse_format(char *str, va_list *ap)
+{
+	t_format	format;
+	int			i;
+
+	init_format(&format);
+	i = 0;
+	while (str[i])
+	{
+		if (is_type(str[i]))
+		{
+			format.type = str[i];
+			return (to_str(format, ap));
+		}
+		else if (is_flag(str[i]))
+			format.flag[str[i++]] = 1;
+		else if (is_num(str[i]) || str[i] == '*')
+		{
+			if (format.flag['.'] == 0)
+			{
+				if (str[i] == '0')
+					format.flag[str[i++]] = 1;
+				get_width(&format, &i, str, ap);
+			}
+			else
+				get_precision(&format, &i, str, ap);
+		}
+	}
+	printf("no type charcater\n");
 	return (0);
 }
 
