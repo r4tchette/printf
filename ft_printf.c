@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 13:44:30 by yeonkim           #+#    #+#             */
-/*   Updated: 2020/12/25 15:50:05 by yeonkim          ###   ########.fr       */
+/*   Updated: 2020/12/29 10:25:48 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,35 +168,131 @@ char	*to_string(char **res, t_format format, va_list *ap)
 	return (*res);
 }
 
-int		get_width(t_format *format, int *i, char *str, va_list *ap)
+int		pad_char(char **res, char c, int len, int dir)
 {
-	if (str[(*i)] == '*')
-		(*format).width = (int)va_arg(*ap, int);
-	else if (is_num(str[(*i)]) && str[(*i)] != '0')
+	char	*tmp;
+	char	*pad;
+	int		i;
+
+	if (!(*res))
+		return (0);
+	if (!(pad = ft_calloc(len + 1, sizeof(char))))
+		return (0);
+	i = 0;
+	while (i < len)
+		pad[i++] = c;
+	if (dir == -1)
+		tmp = ft_strjoin(*res, pad);
+	else if (dir == 1)
+		tmp = ft_strjoin(pad, *res);
+	else
 	{
-		while(is_num(str[(*i)]))
+		free(pad);
+		return (-1);
+	}
+	free(*res);
+	*res = tmp;
+	return (1);
+}
+
+char	*c_to_str(t_format format, va_list *ap)
+{
+	char	*res;
+
+	if (!(res = ft_calloc(2, sizeof(char))))
+		return (0);
+	res[0] = (char)va_arg(*ap, int);
+	printf("format width : %d\n", format.width);
+	printf("format precision : %d\n", format.precision);
+	printf("res : <%s>\n", res);
+	if (format.width < 0)
+	{
+		format.flag['-'] = 1;
+		format.width *= -1;
+	}
+	if (format.width > 1)
+	{
+		if (!format.flag['-'])
+			pad_char(&res, ' ', format.width - 1, 1);
+		else
+			pad_char(&res, ' ', format.width - 1, -1);
+	}
+	return (res);
+}
+
+char	*to_str(t_format format, va_list *ap)
+{
+	char	*res;
+
+	res = NULL;
+	if (format.type == '%')
+		res = ft_strdup("%");
+	else if (format.type == 'c')
+		res = c_to_str(format, ap);
+		/*
+	else if (format.type == 's')
+		*res = s_to_str(format, ap);
+	else if (format.type == 'p')
+		*res = p_to_str(format, ap);
+	else if (format.type == 'd' || format.type == 'i')
+		*res = d_to_str(format, ap);
+	else if (format.type == 'u')
+		*res = u_to_str(format, ap);
+	else if (format.type == 'x' || format.type == 'X')
+		*res = x_to_str(format, ap);
+		*/
+	else
+		printf("undefined format type!\n");
+
+	if (!res)
+		return (0);
+	return (res);
+}
+
+int		get_width(t_format *format, int *idx, char *str, va_list *ap)
+{
+	int	width;
+	int	i;
+
+	width = 0;
+	i = (*idx);
+	if (str[i] == '*')
+	{
+		width = (int)va_arg(*ap, int);
+		i++;
+	}
+	else if (str[i] != '0')
+	{
+		(*format).flag['0'] = 1;
+		i++;
+	}
+	else if (is_num(str[i]))
+	{
+		while(is_num(str[i]))
 		{
-			(*format).width *= 10;
-			(*format).width += str[(*i)] - '0';
-			(*i)++;
+			width *= 10;
+			width += str[i++] - '0';
 		}
-		(*i)--;
 	}
 	else
 		return (0);
+	(*format).width = width;
+	*idx = i;
+	printf("index after get_width : %c(%d)\n", str[i], i);
 	return (1);
 }
 
 int		get_precision(t_format *format, int *i, char *str, va_list *ap)
 {
 	(*i)++;
+	printf("get precison \n");
 	if (str[(*i)] == '*')
-		(*format).precision = va_arg(*ap, int);
+		(*format).precision = (int)va_arg(*ap, int);
 	else if (is_num(str[(*i)]))
-		while(is_num(str[(*i)]))
+		while(is_num(str[(*i)]) && str[(*i)])
 		{
-			(*format).width *= 10;
-			(*format).width += str[(*i)] - '0';
+			(*format).precision *= 10;
+			(*format).precision += str[(*i)] - '0';
 			(*i)++;
 		}
 	else
@@ -204,7 +300,7 @@ int		get_precision(t_format *format, int *i, char *str, va_list *ap)
 	return (1);
 }
 
-char	*parse_format(char **res, char *str, va_list *ap)
+char	*parse_format(char *str, va_list *ap)
 {
 	t_format	format;
 	int			i;
@@ -216,16 +312,17 @@ char	*parse_format(char **res, char *str, va_list *ap)
 		if (is_type(str[i]))
 		{
 			format.type = str[i];
-			return (to_string(res, format, ap));
+			return (to_str(format, ap));
+			//return (to_string(res, format, ap));
 		}
 		else if (is_flag(str[i]))
-			format.flag[(int)str[i]] = 1;
-		else if ((str[i] == '*') || (is_num(str[i]) && str[i] != '0'))
+			format.flag[str[i]] = 1;
+		else if (((str[i] == '*') || (is_num(str[i]))) && format.width == 0)
 			get_width(&format, &i, str, ap);
-		else if (str[i] == '.')
+		else if (str[i] == '.' && !format.precision)
 			get_precision(&format, &i, str, ap);
 	}
-	return (NULL);
+	return (0);
 }
 
 int		expand_string(char **buf, size_t *buf_size, size_t new_size)
@@ -280,7 +377,7 @@ int		ft_printf(char *str, ...)
 	{
 		if (str[i] == '%')
 		{
-			if (!(parse_format(&tmp, &str[i + 1], &ap)))
+			if (!(tmp = parse_format(&str[i + 1], &ap)))
 				return (-1);
 			if (buf_size < ft_strlen(buf) + ft_strlen(tmp) + 1)
 				expand_string(&buf, &buf_size, ft_strlen(buf) + ft_strlen(tmp) + 1);
@@ -293,38 +390,3 @@ int		ft_printf(char *str, ...)
 	}
 	return (print_buf(&buf, &ap));
 }
-
-/*
-int	main(void)
-{
-	int	i;
-	int	n;
-
-	i = 12345;
-	n = 314;
-	printf("   printf : [%12s]\n", "12345");
-	ft_printf("ft_printf : [%12s]\n", "12345");
-	printf("   printf[%4sABC%s%%%s, <%-1s>]\n", "abc", "xxxxx", "!@#", "123123");
-	ft_printf("ft_printf[%4sABC%s%%%s, <%-1s>]\n", "abc", "xxxxx", "!@#", "123123");
-	printf("[%4sABC%s%%%s, <%-1s>]\n", "abc", "xxxxx", "!@#", "123123");
-	ft_printf("[%4sABC%s%%%s, <%-1s>]\n", "abc", "xxxxx", "!@#", "123123");
-	printf("[%-10d]\n", 123);
-	ft_printf("[%-10d]\n", 123);
-	printf("format c : [%c%c%c]\n", 'a', 'b', 'c');
-
-	ft_printf("format c : []\n");
-	ft_printf("format c : [%c]\n", 'a');
-	ft_printf("format c : [%c%c%c]\n", 'a', 'b', 'c');
-	printf("format p : [%17p]\n", &i);
-	ft_printf("format p : [%17p]\n", &i);
-	printf("format i : [%i]\n", 123);
-	ft_printf("format i : %0-+20u\n", 1);
-	printf("format u : [%-20u]\n", 1);
-	ft_printf("format u : %x", 1023);
-	printf("format x : [%x]\n", 1023);
-	n = printf("format x : format %%n %n\n", &i);
-	printf("\nreturn value : [%d], i is [%d]\n", n, i);
-	printf("format %%f : %f\n", 3.141592);
-	return (0);
-}
-*/

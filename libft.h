@@ -25,5 +25,6 @@ char			*ft_strjoin(char const *s1, char const *s2);
 char			*ft_itoa(int n);
 char			*ft_ltoa(long long n);
 char			*ft_xtoa(unsigned int n, char c);
+int				ft_printf(char *str, ...);
 
 #endif
