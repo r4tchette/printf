@@ -15,8 +15,47 @@
 
 #include "libft.h"
 
-// #define printf ft_printf
+#define printf ft_printf
 
+int main(void) {
+	// test for %d
+    unsigned int i = 123;
+	
+	printf("#01 [%u]\n", i);
+	printf("#02 [%3u]\n", i);
+	printf("#03 [%.3u]\n", i);
+	printf("#04 [%3.3u]\n", i);
+	printf("#05 [%*u]\n", 4, i);
+	printf("#06 [%.*u]\n", 4, i);
+	printf("#07 [%*.*u]\n", 4, 4, i);
+	printf("#08 [%03u]\n", i);
+	printf("#09 [%-3u]\n", i);
+	printf("#10 [%0.3u]\n", i);
+	printf("#11 [%-.3u]\n", i);
+	printf("#12 [%0u]\n", i);
+	printf("#13 [%.0u]\n", i);
+	printf("#14 [%*u]\n", 0, i);
+	printf("#15 [%.*u]\n", 0, i);
+	printf("#16 [%*u]\n", -1, i);
+	printf("#17 [%.*u]\n", -1, i);
+	printf("#18 [% *u]\n", 10, i);
+	printf("#19 [% .*u]\n", 10, i);
+	printf("#20 [%-*u]\n", 10, i);
+	printf("#21 [%-.*u]\n", 10, i);
+	printf("#22 [%-5.10u]\n", i);
+	printf("#23 [%-10.5u]\n", i);
+	printf("#24 [%5.10u]\n", i);
+	printf("#25 [%10.5u]\n", i);
+	printf("#26 [%*u]\n", -10, i);
+	printf("#27 [%.*u]\n", -10, i);
+	printf("#28 [% 3u]\n", i);
+	printf("#29 [%03u]\n", i);
+	printf("#30 [% .3u]\n", i);
+	printf("#31 [%0.3u]\n", i);
+	return (0);
+}
+
+/*
 int main(void)
 {
 	char *ptr = "123";
@@ -38,6 +77,7 @@ int main(void)
 	printf("#15 [%-.*p]\n", 11, ptr);
 	return (0);
 }
+*/
 
 /*
 int main(void) {
