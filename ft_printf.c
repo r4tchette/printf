@@ -243,6 +243,83 @@ char	*s_to_str(t_format format, va_list *ap)
 	return (res);
 }
 
+int		sign_int(char **str)
+{
+	char	*tmp;
+	int		sign;
+	int		i;
+
+	sign = 1;
+	i = 0;
+	if ((*str)[i] = '-')
+		sign *= -1;
+	if (sign == -1)
+	{
+		tmp = ft_calloc(ft_strlen((*str)), sizeof(char));
+		while ((*str)[i + 1])
+		{
+			tmp[i] = (*str)[i + 1];
+			i++;
+		}
+		(*str) = tmp;
+	}
+	return (sign);
+}
+
+int		set_sign_position(char **str)
+{
+	int		i;
+
+	i = 0;
+	while ((*str)[i])
+	{
+		if ((*str)[i] == '-')
+			return (1);
+		else if ((*str)[i] == '0')
+		{
+			(*str)[i++] = '-';
+			while ((*str)[i])
+			{
+				if ((*str)[i] == '-')
+				{
+					(*str)[i] = '0';
+					return (2);
+				}
+				i++;
+			}
+		}
+		i++;                                                                                                                                                                                      
+	}
+	return (0);
+}
+
+char	*d_to_str(t_format format, va_list *ap)
+{
+	char	*res;
+	char	pad;
+	int		dir;
+	int		sign;
+
+	res = ft_itoa(va_arg(*ap, int));
+	sign = sign_int(&res);
+	//format.width -= (sign == -1) ? 1 : 0;
+	if (format.precision > ft_strlen(res))
+		pad_char(&res, '0', format.precision - ft_strlen(res), 1);
+	if (sign == -1)
+		pad_char(&res, '-', 1, 1);
+	if (format.width > ft_strlen(res))
+	{
+		pad = (format.flag['0'] ? '0' : ' ');
+		dir = (format.flag['-'] ? -1 : 1);
+		pad_char(&res, pad, format.width - ft_strlen(res), dir);
+	}
+	if (format.width == 0 && format.flag[' '] == 1 && sign == 1)
+		pad_char(&res, ' ', 1, 1);
+	if (sign == -1)
+		set_sign_position(&res);
+	return (res);
+}
+
 char	*to_str(t_format format, va_list *ap)
 {
 	char	*res;
@@ -258,12 +335,14 @@ char	*to_str(t_format format, va_list *ap)
 /*
 	else if (format.type == 'p')
 		*res = p_to_str(format, ap);
+*/
 	else if (format.type == 'd' || format.type == 'i')
-		*res = d_to_str(format, ap);
+		res = d_to_str(format, ap);
+/*
 	else if (format.type == 'u')
-		*res = u_to_str(format, ap);
+		res = u_to_str(format, ap);
 	else if (format.type == 'x' || format.type == 'X')
-		*res = x_to_str(format, ap);
+		res = x_to_str(format, ap);
 */
 	else
 		printf("undefined format type!\n");
@@ -283,16 +362,16 @@ int		get_width(t_format *format, int *idx, char *str, va_list *ap)
 	if (str[i] == '*')
 	{
 		width = (int)va_arg(*ap, int);
+		if (width < 0)
+		{
+			width *= -1;
+			format->flag['-'] = 1;
+		}
 		i++;
 	}
 	else if (is_num(str[i]))
-	{
 		while(is_num(str[i]))
-		{
-			width *= 10;
-			width += str[i++] - '0';
-		}
-	}
+			width = 10 * width + (str[i++] - '0');
 	else
 		return (0);
 	format->width = width;
@@ -327,30 +406,6 @@ int		get_precision(t_format *format, int *idx, char *str, va_list *ap)
 	return (1);
 }
 
-char	*parse_format2(char *str, va_list *ap)
-{
-	t_format	format;
-	int			i;
-
-	init_format(&format);
-	i = -1;
-	while (str[++i])
-	{
-		if (is_type(str[i]))
-		{
-			format.type = str[i];
-			return (to_str(format, ap));
-			//return (to_string(res, format, ap));
-		}
-		else if (is_flag(str[i]))
-			format.flag[str[i]] = 1;
-		else if (((str[i] == '*') || (is_num(str[i]))) && format.width == 0)
-			get_width(&format, &i, str, ap);
-		else if (str[i] == '.' && !format.precision)
-			get_precision(&format, &i, str, ap);
-	}
-	return (0);
-}
 
 char	*parse_format(char *str, va_list *ap)
 {
