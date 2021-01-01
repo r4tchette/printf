@@ -302,7 +302,6 @@ char	*d_to_str(t_format format, va_list *ap)
 
 	res = ft_itoa(va_arg(*ap, int));
 	sign = sign_int(&res);
-	//format.width -= (sign == -1) ? 1 : 0;
 	if (format.precision > ft_strlen(res))
 		pad_char(&res, '0', format.precision - ft_strlen(res), 1);
 	if (sign == -1)
