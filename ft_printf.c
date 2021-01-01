@@ -319,6 +319,30 @@ char	*d_to_str(t_format format, va_list *ap)
 	return (res);
 }
 
+char	*p_to_str(t_format format, va_list *ap)
+{
+	long long	ptr;
+	char		*res;
+	int			i;
+
+	ptr = va_arg(*ap, long long);
+	res = ft_calloc(9, sizeof(char));
+	i = 8;
+	while (i > 0)
+	{
+		res[--i] = convert_to_hex(ptr % 16);
+		ptr /= 16;
+	}
+	if (format.width > ft_strlen(res))
+	{
+		if (format.flag['-'] == 1)
+			pad_char(&res, ' ', format.width - ft_strlen(res), -1);
+		else
+			pad_char(&res, ' ', format.width - ft_strlen(res), 1);
+	}
+	return (res);
+}
+
 char	*to_str(t_format format, va_list *ap)
 {
 	char	*res;
@@ -331,10 +355,8 @@ char	*to_str(t_format format, va_list *ap)
 		res = c_to_str(format, ap);
 	else if (format.type == 's')
 		res = s_to_str(format, ap);
-/*
 	else if (format.type == 'p')
-		*res = p_to_str(format, ap);
-*/
+		res = p_to_str(format, ap);
 	else if (format.type == 'd' || format.type == 'i')
 		res = d_to_str(format, ap);
 /*

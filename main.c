@@ -15,9 +15,33 @@
 
 #include "libft.h"
 
-#define printf ft_printf
+// #define printf ft_printf
 
+int main(void)
+{
+	char *ptr = "123";
+
+	printf("#01 [%p]\n", ptr);
+	printf("#02 [%*p]\n", -3, ptr);
+	printf("#03 [%.*p]\n", -3, ptr);
+	printf("#04 [%*p]\n", 0, ptr);
+	printf("#05 [%.*p]\n", 0, ptr);
+	printf("#06 [%*p]\n", 3, ptr);
+	printf("#07 [%.*p]\n", 3, ptr);
+	printf("#08 [%*p]\n", 11, ptr);
+	printf("#09 [%.*p]\n", 11, ptr);
+	printf("#10 [%0*p]\n", 11, ptr);
+	printf("#11 [%0.*p]\n", 11, ptr);
+	printf("#12 [% *p]\n", 11, ptr);
+	printf("#13 [% .*p]\n", 11, ptr);
+	printf("#14 [%-*p]\n", 11, ptr);
+	printf("#15 [%-.*p]\n", 11, ptr);
+	return (0);
+}
+
+/*
 int main(void) {
+	// test for %d
     int i = -9;
 	
 	printf("#01 [%d]\n", i);
@@ -53,44 +77,11 @@ int main(void) {
 	printf("#31 [%0.3d]\n", i);
 	return (0);
 }
-
-/*
-int main(void) {
-    int i = 9;
-	
-	ft_printf("#01 [%d]\n", i);
-	ft_printf("#02 [%3d]\n", i);
-	ft_printf("#03 [%.3d]\n", i);
-	ft_printf("#04 [%3.3d]\n", i);
-	ft_printf("#05 [%*d]\n", 4, i);
-	ft_printf("#06 [%.*d]\n", 4, i);
-	ft_printf("#07 [%*.*d]\n", 4, 4, i);
-	ft_printf("#08 [%03d]\n", i);
-	ft_printf("#09 [%-3d]\n", i);
-	ft_printf("#10 [%0.3d]\n", i);
-	ft_printf("#11 [%-.3d]\n", i);
-	ft_printf("#12 [%0d]\n", i);
-	ft_printf("#13 [%.0d]\n", i);
-	ft_printf("#14 [%*d]\n", 0, i);
-	ft_printf("#15 [%.*d]\n", 0, i);
-	ft_printf("#16 [%*d]\n", -1, i);
-	ft_printf("#17 [%.*d]\n", -1, i);
-	ft_printf("#18 [% *d]\n", 10, i);
-	ft_printf("#19 [% .*d]\n", 10, i);
-	ft_printf("#20 [%-*d]\n", 10, i);
-	ft_printf("#21 [%-.*d]\n", 10, i);
-	ft_printf("#22 [%-5.10d]\n", i);
-	ft_printf("#23 [%-10.5d]\n", i);
-	ft_printf("#24 [%5.10d]\n", i);
-	ft_printf("#25 [%10.5d]\n", i);
-	ft_printf("#26 [%*d]\n", -10, i);
-	ft_printf("#27 [%.*d]\n", -10, i);
-	return (0);
-}
 */
 
 /*
 int main(void) {
+	// test for %s
 	char *str = "abcdef";
 	
 	ft_printf("#01 [%s]\n", str);
