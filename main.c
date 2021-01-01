@@ -15,8 +15,9 @@
 
 #include "libft.h"
 
-#define printf ft_printf
+// #define printf ft_printf
 
+/*
 int main(void) {
 	// test for %d
     unsigned int i = 123;
@@ -54,6 +55,7 @@ int main(void) {
 	printf("#31 [%0.3u]\n", i);
 	return (0);
 }
+*/
 
 /*
 int main(void)
@@ -79,10 +81,10 @@ int main(void)
 }
 */
 
-/*
+
 int main(void) {
 	// test for %d
-    int i = -9;
+    int i = -123456789;
 	
 	printf("#01 [%d]\n", i);
 	printf("#02 [%3d]\n", i);
@@ -117,7 +119,7 @@ int main(void) {
 	printf("#31 [%0.3d]\n", i);
 	return (0);
 }
-*/
+
 
 /*
 int main(void) {

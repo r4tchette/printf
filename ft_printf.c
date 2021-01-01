@@ -251,7 +251,7 @@ int		sign_int(char **str)
 
 	sign = 1;
 	i = 0;
-	if ((*str)[i] = '-')
+	if ((*str)[i] == '-')
 		sign *= -1;
 	if (sign == -1)
 	{
@@ -312,7 +312,7 @@ char	*d_to_str(t_format format, va_list *ap)
 		dir = (format.flag['-'] ? -1 : 1);
 		pad_char(&res, pad, format.width - ft_strlen(res), dir);
 	}
-	if (format.width == 0 && format.flag[' '] == 1 && sign == 1)
+	if (format.flag[' '] == 1 && is_num(res[0]))
 		pad_char(&res, ' ', 1, 1);
 	if (sign == -1)
 		set_sign_position(&res);
