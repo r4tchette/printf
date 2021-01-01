@@ -15,7 +15,32 @@
 
 #include "libft.h"
 
-// #define printf ft_printf
+#define printf ft_printf
+
+int	main(void)
+{
+	unsigned int	i = 123456;
+
+	printf("#01 : [%x]\n", i);
+	printf("#02 : [%*x]\n", 10, i);
+	printf("#03 : [%.*x]\n", 10, i * 16);
+	printf("#04 : [%X]\n", i);
+	printf("#05 : [%*X]\n", 10, i);
+	printf("#06 : [%.*X]\n", 10, i);
+	printf("#07 : [% X]\n", i);
+	printf("#08 : [% *X]\n", 10, i);
+	printf("#09 : [% .*X]\n", 10, i);
+	printf("#10 : [%-X]\n", i);
+	printf("#11 : [%-*X]\n", 10, i);
+	printf("#12 : [%-.*X]\n", 10, i);
+	printf("#13 : [%0X]\n", i);
+	printf("#14 : [%0*X]\n", 10, i);
+	printf("#15 : [%0.*X]\n", 10, i);
+	printf("#16 : [%- 0X]\n", i);
+	printf("#17 : [%- 0*X]\n", 10, i);
+	printf("#18 : [%- 0.*X]\n", 10, i);
+	return (0);
+}
 
 /*
 int main(void) {
@@ -81,7 +106,7 @@ int main(void)
 }
 */
 
-
+/*
 int main(void) {
 	// test for %d
     int i = -123456789;
@@ -119,7 +144,7 @@ int main(void) {
 	printf("#31 [%0.3d]\n", i);
 	return (0);
 }
-
+*/
 
 /*
 int main(void) {

@@ -361,6 +361,26 @@ char	*u_to_str(t_format format, va_list *ap)
 	return (res);
 }
 
+char	*x_to_str(t_format format, va_list *ap)
+{
+	unsigned int	num;
+	char			*res;
+	char			pad;
+	int				dir;
+
+	num = va_arg(*ap, unsigned int);
+	res = ft_xtoa(num, format.type);
+	if (format.precision > ft_strlen(res))
+		pad_char(&res, '0', format.precision - ft_strlen(res), 1);
+	if (format.width > ft_strlen(res))
+	{
+		pad = ((format.flag['0'] && !format.flag['-']) ? '0' : ' ');
+		dir = (format.flag['-'] ? -1 : 1);
+		pad_char(&res, pad, format.width - ft_strlen(res), dir);
+	}
+	return (res);
+}
+
 char	*to_str(t_format format, va_list *ap)
 {
 	char	*res;
@@ -379,13 +399,10 @@ char	*to_str(t_format format, va_list *ap)
 		res = d_to_str(format, ap);
 	else if (format.type == 'u')
 		res = u_to_str(format, ap);
-/*
 	else if (format.type == 'x' || format.type == 'X')
 		res = x_to_str(format, ap);
-*/
 	else
 		printf("undefined format type!\n");
-
 	if (!res)
 		return (0);
 	return (res);
