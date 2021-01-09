@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 13:44:30 by yeonkim           #+#    #+#             */
-/*   Updated: 2020/12/29 10:25:48 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/09 14:28:15 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -288,7 +288,7 @@ int		set_sign_position(char **str)
 				i++;
 			}
 		}
-		i++;                                                                                                                                                                                      
+		i++;
 	}
 	return (0);
 }
@@ -319,7 +319,7 @@ char	*d_to_str(t_format format, va_list *ap)
 	return (res);
 }
 
-char	*p_to_str(t_format format, va_list *ap) 
+char	*p_to_str(t_format format, va_list *ap)
 {
 	long long	ptr;
 	char		*res;
@@ -381,6 +381,14 @@ char	*x_to_str(t_format format, va_list *ap)
 	return (res);
 }
 
+char	*f_to_str(t_format format, va_list *ap)
+{
+	char	*res;
+
+	res = NULL;
+	return (res);
+}
+
 char	*to_str(t_format format, va_list *ap)
 {
 	char	*res;
@@ -401,6 +409,8 @@ char	*to_str(t_format format, va_list *ap)
 		res = u_to_str(format, ap);
 	else if (format.type == 'x' || format.type == 'X')
 		res = x_to_str(format, ap);
+	else if (format.type == 'f')
+		res = f_to_str(format, ap);
 	else
 		printf("undefined format type!\n");
 	if (!res)

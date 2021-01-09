@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abourin <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 10:29:29 by abourin           #+#    #+#             */
-/*   Updated: 2019/10/22 13:21:34 by abourin          ###   ########.fr       */
+/*   Updated: 2021/01/09 15:26:36 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,19 @@
 
 #include "libft.h"
 
-#define printf ft_printf
+//#define printf ft_printf
 
+int main(void)
+{
+	printf("%.3f\n", 9.999999);
+	printf("result : %s\n", ft_ftoa(3.14159, 2));
+	printf("result : %s\n", ft_ftoa(0.5, 0));
+	printf("result : %s\n", ft_ftoa(1.5, 0));
+	printf("result : %s\n", ft_ftoa(2.5, 0));
+	printf("result : %s\n", ft_ftoa(3.5, 0));
+	return (0);
+}
+/*
 int	main(void)
 {
 	unsigned int	i = 123456;
@@ -41,12 +52,12 @@ int	main(void)
 	printf("#18 : [%- 0.*X]\n", 10, i);
 	return (0);
 }
-
+/*
 /*
 int main(void) {
 	// test for %d
     unsigned int i = 123;
-	
+
 	printf("#01 [%u]\n", i);
 	printf("#02 [%3u]\n", i);
 	printf("#03 [%.3u]\n", i);
@@ -110,7 +121,7 @@ int main(void)
 int main(void) {
 	// test for %d
     int i = -123456789;
-	
+
 	printf("#01 [%d]\n", i);
 	printf("#02 [%3d]\n", i);
 	printf("#03 [%.3d]\n", i);
@@ -150,7 +161,7 @@ int main(void) {
 int main(void) {
 	// test for %s
 	char *str = "abcdef";
-	
+
 	ft_printf("#01 [%s]\n", str);
 	ft_printf("#02 [%3s]\n", str);
 	ft_printf("#03 [%.3s]\n", str);
@@ -326,7 +337,7 @@ int main(void)
 	ft_printf("%d\n\n", ft_printf("8unsigned 1 %*u unsigned 2 %*u\n\n", 42, 6, 6, 6));
 	ft_printf("%d\n\n", ft_printf("15unsigned 1 %.u unsigned 2 %.u\n\n", 42, -42));
 	ft_printf("%d\n\n", ft_printf("%s", 0));
-	ft_printf("%d\n\n", ft_printf("%%\n")); 
+	ft_printf("%d\n\n", ft_printf("%%\n"));
 	ft_printf("%d\n\n", ft_printf("%-.12u\n", -20000000));
 	ft_printf("%d\n\n", ft_printf("%-.12i\n", -20000000));
 	ft_printf("%d\n", ft_printf("truc"));

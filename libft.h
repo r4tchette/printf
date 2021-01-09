@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/12 14:28:38 by yeonkim           #+#    #+#             */
-/*   Updated: 2020/10/12 14:28:38 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/09 14:53:42 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ char			*ft_itoa(int n);
 char			*ft_ltoa(long long n);
 char			*ft_xtoa(unsigned int n, char c);
 char			*ft_utoa(unsigned int n);
+char			*ft_ftoa(double decimal, int precision);
+int				ft_strappend(char **s, char const c);
 int				ft_printf(char *str, ...);
 
 #endif
