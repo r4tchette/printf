@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/12 14:27:44 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/01/10 12:37:11 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/10 16:44:45 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,10 @@ static int		round_up(char *buf, int idx)
 	while (idx >= 0)
 	{
 		if (buf[idx] == '9')
+		{
+			buf[idx] = '0';
 			idx--;
+		}
 		else
 		{
 			buf[idx]++;
@@ -59,16 +62,18 @@ static int		round_up(char *buf, int idx)
 char			*ft_ftoa(double decimal, int precision)
 {
 	char	*res;
-	char	buf[128];
+	char	*buf;
 	int		integer;
 	int		idx;
 
-	precision = (precision == -1) ? 6 : precision;
+	precision = (precision < 0) ? 6 : precision;
+	buf = ft_calloc(precision + 1, sizeof(char));
 	integer = (int)decimal;
 	decimal -= (int)decimal;
 	idx = 0;
 	if (precision == 0)
-		buf[idx++] = '0';
+		return (ft_itoa(integer));
+		//buf[idx++] = '0';
 	else
 		while(idx < precision)
 		{
@@ -83,5 +88,6 @@ char			*ft_ftoa(double decimal, int precision)
 	ft_strlcpy(res, ft_itoa(integer), int_len(integer) + 1);
 	ft_strlcat(res, ".", ft_strlen(res) + 2);
 	ft_strlcat(res, buf, ft_strlen(res) + ft_strlen(buf) + 1);
+	free(buf);
 	return (res);
 }

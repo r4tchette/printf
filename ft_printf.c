@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 13:44:30 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/01/10 12:37:10 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/10 17:24:57 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int		is_type(char c)
 	if (c == 'c' || c == 's' || c == 'p' ||\
 		c == 'd' || c == 'i' || c == 'u' ||\
 		c == 'x' || c == 'X' || c == '%' ||\
-		c == 'f')
+		c == 'n' || c == 'f')
 		return (1);
 	return (0);
 }
@@ -200,6 +200,8 @@ int		pad_char(char **res, char c, int len, int dir)
 char	*c_to_str(t_format format, va_list *ap)
 {
 	char	*res;
+	char	pad;
+	int		dir;
 
 	if (!(res = ft_calloc(2, sizeof(char))))
 		return (0);
@@ -211,10 +213,9 @@ char	*c_to_str(t_format format, va_list *ap)
 	}
 	if (format.width > 1)
 	{
-		if (!format.flag['-'])
-			pad_char(&res, ' ', format.width - 1, 1);
-		else
-			pad_char(&res, ' ', format.width - 1, -1);
+		pad = format.flag['0'] ? '0' : ' ';
+		dir = format.flag['-'] ? -1 : 1;
+		pad_char(&res, pad, format.width - 1, dir);
 	}
 	return (res);
 }
@@ -222,21 +223,18 @@ char	*c_to_str(t_format format, va_list *ap)
 char	*s_to_str(t_format format, va_list *ap)
 {
 	char	*ptr;
-	char	*str;
 	char	*res;
+	int		dir;
 
 	if (!(ptr = va_arg(*ap, char *)))
-		str = ft_strdup("(null)");
+		res = ft_strdup("(null)");
 	else
-		str = ft_strdup(ptr);
-	if (format.precision != -1 && format.precision < ft_strlen(str))
+		res = ft_strdup(ptr);
+	if (format.width > ft_strlen(res))
 	{
-		res = ft_calloc(format.precision + 1, sizeof(char));
-		ft_strlcpy(res, str, format.precision + 1);
-		free(str);
-		return (res);
+		dir = (format.flag['-'] ? -1 : 1);
+		pad_char(&res, ' ', format.width - ft_strlen(res), dir);
 	}
-	res = str;
 	return (res);
 }
 
@@ -296,8 +294,12 @@ char	*d_to_str(t_format format, va_list *ap)
 	char	pad;
 	int		dir;
 	int		sign;
+	int		num;
 
-	res = ft_itoa(va_arg(*ap, int));
+	num = va_arg(*ap, int);
+	if (num == 0 && format.precision == 0)
+		return (ft_strdup(""));
+	res = ft_itoa(num);
 	sign = sign_int(&res);
 	if (format.precision > ft_strlen(res))
 		pad_char(&res, '0', format.precision - ft_strlen(res), 1);
@@ -387,8 +389,13 @@ char	*f_to_str(t_format format, va_list *ap)
 	int		sign;
 
 	decimal = va_arg(*ap, double);
+	sign = 1;
+	if (decimal < 0)
+	{
+		sign = -1;
+		decimal *= -1;
+	}
 	res = ft_ftoa(decimal, format.precision);
-	sign = (decimal < 0) ? -1 : 1;
 	if (format.precision > ft_strlen(res))
 		pad_char(&res, '0', format.precision - ft_strlen(res), 1);
 	if (sign == -1)
@@ -409,7 +416,17 @@ char	*f_to_str(t_format format, va_list *ap)
 	return (res);
 }
 
-char	*to_str(t_format format, va_list *ap)
+char	*n_to_str(va_list *ap, int buf_len)
+{
+	int	*ptr;
+
+	ptr = va_arg(*ap, int *);
+	if (ptr)
+		*ptr = buf_len;
+	return (ft_strdup(""));
+}
+
+char	*to_str(t_format format, va_list *ap, int buf_len)
 {
 	char	*res;
 
@@ -432,6 +449,8 @@ char	*to_str(t_format format, va_list *ap)
 		res = x_to_str(format, ap);
 	else if (format.type == 'f')
 		res = f_to_str(format, ap);
+	else if (format.type == 'n')
+		res = n_to_str(ap, buf_len);
 	else
 		printf("undefined format type!\n");
 	if (!res)
@@ -494,7 +513,7 @@ int		get_precision(t_format *format, int *idx, char *str, va_list *ap)
 }
 
 
-char	*parse_format(char *str, va_list *ap)
+char	*parse_format(char *str, va_list *ap, int buf_len)
 {
 	t_format	format;
 	int			i;
@@ -506,7 +525,7 @@ char	*parse_format(char *str, va_list *ap)
 		if (is_type(str[i]))
 		{
 			format.type = str[i];
-			return (to_str(format, ap));
+			return (to_str(format, ap, buf_len));
 		}
 		else if (is_flag(str[i]))
 			format.flag[str[i++]] = 1;
@@ -522,7 +541,7 @@ char	*parse_format(char *str, va_list *ap)
 				get_precision(&format, &i, str, ap);
 		}
 	}
-	printf("no type charcater\n");
+	//printf("no type charcater\n");
 	return (0);
 }
 
@@ -534,7 +553,7 @@ int		expand_string(char **buf, size_t *buf_size, size_t new_size)
 	{
 		tmp = ft_strdup(*buf);
 		free(*buf);
-		*buf_size *= 2;
+		*buf_size = 2 * new_size;
 		if (!(*buf = ft_calloc(*buf_size, sizeof(char))))
 			return (0);
 		ft_strlcpy(*buf, tmp, ft_strlen(tmp) + 1);
@@ -578,7 +597,7 @@ int		ft_printf(char *str, ...)
 	{
 		if (str[i] == '%')
 		{
-			if (!(tmp = parse_format(&str[i + 1], &ap)))
+			if (!(tmp = parse_format(&str[i + 1], &ap, ft_strlen(buf))))
 				return (-1);
 			if (buf_size < ft_strlen(buf) + ft_strlen(tmp) + 1)
 				expand_string(&buf, &buf_size, ft_strlen(buf) + ft_strlen(tmp) + 1);
