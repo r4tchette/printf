@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/12 14:27:44 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/01/09 15:25:54 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/10 12:37:11 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ char			*ft_ftoa(double decimal, int precision)
 	int		integer;
 	int		idx;
 
+	precision = (precision == -1) ? 6 : precision;
 	integer = (int)decimal;
 	decimal -= (int)decimal;
 	idx = 0;
@@ -75,7 +76,7 @@ char			*ft_ftoa(double decimal, int precision)
 			buf[idx++] = (int)decimal + '0';
 			decimal -= (int)decimal;
 		}
-	buf[idx] = 0;
+	buf[idx--] = 0;
 	if (decimal > 0.5 || (decimal == 0.5 && is_odd(buf[idx] - '0')))
 		integer += round_up(buf, idx);
 	res = ft_calloc(int_len(integer) + ft_strlen(buf) + 2, sizeof(char));

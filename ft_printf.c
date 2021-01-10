@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 13:44:30 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/01/09 14:28:15 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/10 12:37:10 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ int		is_type(char c)
 {
 	if (c == 'c' || c == 's' || c == 'p' ||\
 		c == 'd' || c == 'i' || c == 'u' ||\
-		c == 'x' || c == 'X' || c == '%')
+		c == 'x' || c == 'X' || c == '%' ||\
+		c == 'f')
 		return (1);
 	return (0);
 }
@@ -203,9 +204,6 @@ char	*c_to_str(t_format format, va_list *ap)
 	if (!(res = ft_calloc(2, sizeof(char))))
 		return (0);
 	res[0] = (char)va_arg(*ap, int);
-	//printf("format width : %d\n", format.width);
-	//printf("format precision : %d\n", format.precision);
-	//printf("res : <%s>\n", res);
 	if (format.width < 0)
 	{
 		format.flag['-'] = 1;
@@ -227,7 +225,6 @@ char	*s_to_str(t_format format, va_list *ap)
 	char	*str;
 	char	*res;
 
-	//printf("precision : %d\n", format.precision);
 	if (!(ptr = va_arg(*ap, char *)))
 		str = ft_strdup("(null)");
 	else
@@ -383,9 +380,32 @@ char	*x_to_str(t_format format, va_list *ap)
 
 char	*f_to_str(t_format format, va_list *ap)
 {
+	double	decimal;
 	char	*res;
+	char	pad;
+	int		dir;
+	int		sign;
 
-	res = NULL;
+	decimal = va_arg(*ap, double);
+	res = ft_ftoa(decimal, format.precision);
+	sign = (decimal < 0) ? -1 : 1;
+	if (format.precision > ft_strlen(res))
+		pad_char(&res, '0', format.precision - ft_strlen(res), 1);
+	if (sign == -1)
+		pad_char(&res, '-', 1, 1);
+	if (format.width > ft_strlen(res))
+	{
+		pad = format.flag['0'] ? '0' : ' ';
+		dir = format.flag['-'] ? -1 : 1;
+		if (pad == '0' && dir == -1)
+			pad_char(&res, ' ', 1, -1);
+		else
+			pad_char(&res, pad, format.width - ft_strlen(res), dir);
+	}
+	if (format.flag[' '] == 1 && is_num(res[0]))
+		pad_char(&res, ' ', 1, 1);
+	if (sign == -1)
+		set_sign_position(&res);
 	return (res);
 }
 
@@ -393,6 +413,7 @@ char	*to_str(t_format format, va_list *ap)
 {
 	char	*res;
 
+	//printf("format type : %c\n", format.type);
 	//printf("width : %d\n, precision : %d\n", format.width, format.precision);
 	res = NULL;
 	if (format.type == '%')

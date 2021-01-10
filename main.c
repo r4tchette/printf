@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 10:29:29 by abourin           #+#    #+#             */
-/*   Updated: 2021/01/09 15:26:36 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/10 12:37:08 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,35 @@
 
 #include "libft.h"
 
-//#define printf ft_printf
+#define printf ft_printf
 
+int	main(void)
+{
+	float	i = 3.14159265358979;
+
+	printf("#01 : [%f]\n", i);
+	printf("#02 : [%*f]\n", 10, i);
+	printf("#03 : [%.*f]\n", 10, i);
+	printf("#04 : [%f]\n", i);
+	printf("#05 : [%*f]\n", 10, i);
+	printf("#06 : [%.*f]\n", 10, i);
+	printf("#07 : [% f]\n", i);
+	printf("#08 : [% *f]\n", 10, i);
+	printf("#09 : [% .*f]\n", 10, i);
+	printf("#10 : [%-f]\n", i);
+	printf("#11 : [%-*f]\n", 10, i);
+	printf("#12 : [%-.*f]\n", 10, i);
+	printf("#13 : [%0f]\n", i);
+	printf("#14 : [%0*f]\n", 10, i);
+	printf("#15 : [%0.*f]\n", 10, i);
+	printf("#16 : [%- 0f]\n", i);
+	printf("#17 : [%- 0*f]\n", 10, i);
+	printf("#18 : [%- 0.*f]\n", 10, i);
+	printf("#19 : [%-0*f]\n", 10, i);
+	return (0);
+}
+
+/*
 int main(void)
 {
 	printf("%.3f\n", 9.999999);
@@ -27,6 +54,8 @@ int main(void)
 	printf("result : %s\n", ft_ftoa(3.5, 0));
 	return (0);
 }
+*/
+
 /*
 int	main(void)
 {
