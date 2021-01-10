@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 13:44:30 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/01/10 22:43:15 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/10 22:45:09 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 typedef struct	s_format
 {
 	char	flag[128];
-	long	width;
+	int		width;
 	int		precision;
 	char	length;
 	char	type;
@@ -230,7 +230,7 @@ char	*s_to_str(t_format format, va_list *ap)
 		res = ft_strdup("(null)");
 	else
 		res = ft_strdup(ptr);
-	if (format.width > ft_strlen(res))
+	if (format.width > (int)ft_strlen(res))
 	{
 		dir = (format.flag['-'] ? -1 : 1);
 		pad_char(&res, ' ', format.width - ft_strlen(res), dir);
@@ -301,11 +301,11 @@ char	*d_to_str(t_format format, va_list *ap)
 		return (ft_strdup(""));
 	res = ft_itoa(num);
 	sign = sign_int(&res);
-	if (format.precision > ft_strlen(res))
+	if (format.precision > (int)ft_strlen(res))
 		pad_char(&res, '0', format.precision - ft_strlen(res), 1);
 	if (sign == -1)
 		pad_char(&res, '-', 1, 1);
-	if (format.width > ft_strlen(res))
+	if (format.width > (int)ft_strlen(res))
 	{
 		pad = (format.flag['0'] ? '0' : ' ');
 		dir = (format.flag['-'] ? -1 : 1);
@@ -332,7 +332,7 @@ char	*p_to_str(t_format format, va_list *ap)
 		res[--i] = convert_to_hex(ptr % 16);
 		ptr /= 16;
 	}
-	if (format.width > ft_strlen(res))
+	if (format.width > (int)ft_strlen(res))
 	{
 		if (format.flag['-'] == 1)
 			pad_char(&res, ' ', format.width - ft_strlen(res), -1);
@@ -349,9 +349,9 @@ char	*u_to_str(t_format format, va_list *ap)
 	int		dir;
 
 	res = ft_utoa(va_arg(*ap, unsigned int));
-	if (format.precision > ft_strlen(res))
+	if (format.precision > (int)ft_strlen(res))
 		pad_char(&res, '0', format.precision - ft_strlen(res), 1);
-	if (format.width > ft_strlen(res))
+	if (format.width > (int)ft_strlen(res))
 	{
 		pad = (format.flag['0'] ? '0' : ' ');
 		dir = (format.flag['-'] ? -1 : 1);
@@ -369,9 +369,9 @@ char	*x_to_str(t_format format, va_list *ap)
 
 	num = va_arg(*ap, unsigned int);
 	res = ft_xtoa(num, format.type);
-	if (format.precision > ft_strlen(res))
+	if (format.precision > (int)ft_strlen(res))
 		pad_char(&res, '0', format.precision - ft_strlen(res), 1);
-	if (format.width > ft_strlen(res))
+	if (format.width > (int)ft_strlen(res))
 	{
 		pad = ((format.flag['0'] && !format.flag['-']) ? '0' : ' ');
 		dir = (format.flag['-'] ? -1 : 1);
@@ -396,11 +396,11 @@ char	*f_to_str(t_format format, va_list *ap)
 		decimal *= -1;
 	}
 	res = ft_ftoa(decimal, format.precision);
-	if (format.precision > ft_strlen(res))
+	if (format.precision > (int)ft_strlen(res))
 		pad_char(&res, '0', format.precision - ft_strlen(res), 1);
 	if (sign == -1)
 		pad_char(&res, '-', 1, 1);
-	if (format.width > ft_strlen(res))
+	if (format.width > (int)ft_strlen(res))
 	{
 		pad = format.flag['0'] ? '0' : ' ';
 		dir = format.flag['-'] ? -1 : 1;
