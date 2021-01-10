@@ -1,12 +1,16 @@
 SRC =	ft_bzero.c\
 		ft_calloc.c\
+		ft_ftoa.c\
 		ft_itoa.c\
 		ft_printf.c\
+		ft_strappend.c\
 		ft_strdup.c\
 		ft_strjoin.c\
 		ft_strlcat.c\
 		ft_strlcpy.c\
 		ft_strlen.c\
+		ft_utoa.c\
+		ft_xtoa.c\
 
 B_SRC =	ft_bzero.c\
 		ft_calloc.c\
