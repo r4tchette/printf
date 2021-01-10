@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 13:44:30 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/01/10 17:24:57 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/10 22:42:05 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 typedef struct	s_format
 {
 	char	flag[128];
-	int		width;
+	long	width;
 	int		precision;
 	char	length;
 	char	type;
