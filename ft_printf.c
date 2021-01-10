@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 13:44:30 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/01/10 22:42:05 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/10 22:43:15 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -528,13 +528,13 @@ char	*parse_format(char *str, va_list *ap, int buf_len)
 			return (to_str(format, ap, buf_len));
 		}
 		else if (is_flag(str[i]))
-			format.flag[str[i++]] = 1;
+			format.flag[(int)str[i++]] = 1;
 		else if (is_num(str[i]) || str[i] == '*')
 		{
 			if (format.flag['.'] == 0)
 			{
 				if (str[i] == '0')
-					format.flag[str[i++]] = 1;
+					format.flag[(int)str[i++]] = 1;
 				get_width(&format, &i, str, ap);
 			}
 			else
