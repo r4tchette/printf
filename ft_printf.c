@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 13:44:30 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/01/11 16:06:18 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/11 16:14:35 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	init_format(t_format *format)
 	format->flag['#'] = 0;
 	format->flag['.'] = 0;
 	format->width = 0;
-	format->precision = -1;
+	format->precision = 0;
 	format->type = 0;
 }
 
@@ -231,7 +231,7 @@ char	*s_to_str(t_format format, va_list *ap)
 		res = ft_strdup("(null)");
 	else
 		res = ft_strdup(ptr);
-	if (format.precision < (int)ft_strlen(res))
+	if (format.flag['.'] && format.precision < (int)ft_strlen(res))
 		res[format.precision] = 0;
 	if (format.width > (int)ft_strlen(res))
 	{
@@ -311,7 +311,7 @@ char	*d_to_str(t_format format, va_list *ap)
 		pad_char(&res, '-', 1, 1);
 	if (format.width > (int)ft_strlen(res))
 	{
-		pad = (format.flag['0'] ? '0' : ' ');
+		pad = (format.flag['0'] && !format.flag['-'] ? '0' : ' ');
 		dir = (format.flag['-'] ? -1 : 1);
 		pad_char(&res, pad, format.width - ft_strlen(res), dir);
 	}
