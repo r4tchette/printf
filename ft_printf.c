@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 13:44:30 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/01/11 18:25:15 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/11 18:26:17 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -314,7 +314,7 @@ int		u_to_str(t_format format, va_list *ap)
 	int				dir;
 
 	num = va_arg(*ap, int);
-	res = (!num && format.flag['.']) ? ft_calloc(1, sizeof(char)) : ft_itoa(num);
+	res = (!num && format.flag['.']) ? ft_calloc(1, sizeof(char)) : ft_utoa(num);
 	if (format.precision > (int)ft_strlen(res))
 		pad_char(&res, '0', format.precision - ft_strlen(res), 1);
 	if (format.width > (int)ft_strlen(res))
