@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 13:44:30 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/01/11 18:11:45 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/11 18:13:45 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int		print_buf(char **buf)
 	return (len);
 }
 
-int		print_buf_with_zero(char **buf, t_format format)
+int		print_char_with_zero(char **buf, t_format format)
 {
 	int	len;
 
@@ -145,7 +145,7 @@ int		c_to_str(t_format format, va_list *ap)
 		pad_char(&res, pad, format.width - 1, dir);
 	}
 	if (is_zero)
-		return (print_buf_with_zero(&res, format));
+		return (print_char_with_zero(&res, format));
 	return (print_buf(&res));
 }
 
@@ -301,6 +301,8 @@ int		p_to_str(t_format format, va_list *ap)
 		dir = (format.flag['-'] ? -1 : 1);
 		pad_char(&res, pad, format.width - ft_strlen(res), dir);
 	}
+	if (is_zero)
+		print_char_with_zero(&res, format);
 	return (print_buf(&res));
 }
 
