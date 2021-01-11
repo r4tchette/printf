@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 10:29:29 by abourin           #+#    #+#             */
-/*   Updated: 2021/01/10 22:39:38 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/11 14:01:26 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@
 #include "libft.h"
 
 #define printf ft_printf
+
+int	main(void)
+{
+	printf(" #%02d\n", printf("%.3s", "hello"));
+	return (0);
+}
 
 /*
 int	main(void)
@@ -245,7 +251,7 @@ int main(void) {
 }
 */
 
-
+/*
 int main(void)
 {
 	int t;
@@ -538,3 +544,4 @@ int main(void)
 	printf("***************%*s%*d**************%*u*************", 10, "coucou", 10, 10, -50, 20);
 	printf("taaa %100s\n", "hello");
 }
+*/
