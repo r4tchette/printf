@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 13:44:30 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/01/11 18:13:45 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/11 18:25:15 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -297,7 +297,7 @@ int		p_to_str(t_format format, va_list *ap)
 	res = (!ptr) ? ft_calloc(1, sizeof(char)) : ft_ptoa(ptr);
 	if (format.width > (int)ft_strlen(res))
 	{
-		pad = (format.flag['0'] && !format.flag['-'] && !format.flag['.'] ? '0' : ' ');
+		pad = (format.flag['0'] && !format.flag['-'] ? '0' : ' ');
 		dir = (format.flag['-'] ? -1 : 1);
 		pad_char(&res, pad, format.width - ft_strlen(res), dir);
 	}
@@ -308,19 +308,23 @@ int		p_to_str(t_format format, va_list *ap)
 
 int		u_to_str(t_format format, va_list *ap)
 {
-	char	*res;
-	char	pad;
-	int		dir;
+	unsigned int	num;
+	char			*res;
+	char			pad;
+	int				dir;
 
-	res = ft_utoa(va_arg(*ap, unsigned int));
+	num = va_arg(*ap, int);
+	res = (!num && format.flag['.']) ? ft_calloc(1, sizeof(char)) : ft_itoa(num);
 	if (format.precision > (int)ft_strlen(res))
 		pad_char(&res, '0', format.precision - ft_strlen(res), 1);
 	if (format.width > (int)ft_strlen(res))
 	{
-		pad = (format.flag['0'] ? '0' : ' ');
+		pad = (format.flag['0'] && !format.flag['-'] && !format.flag['.'] ? '0' : ' ');
 		dir = (format.flag['-'] ? -1 : 1);
 		pad_char(&res, pad, format.width - ft_strlen(res), dir);
 	}
+	if (format.flag[' '] == 1 && is_num(res[0]))
+		pad_char(&res, ' ', 1, 1);
 	return (print_buf(&res));
 }
 
