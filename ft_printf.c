@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 13:44:30 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/01/11 17:57:57 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/11 18:11:45 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,7 +230,7 @@ int		d_to_str(t_format format, va_list *ap)
 	int		num;
 
 	num = va_arg(*ap, int);
-	res = (num == 0 && format.flag['.']) ? ft_calloc(1, sizeof(char)) : ft_itoa(num);
+	res = (!num && format.flag['.']) ? ft_calloc(1, sizeof(char)) : ft_itoa(num);
 	sign = sign_int(&res);
 	if (format.precision > (int)ft_strlen(res))
 		pad_char(&res, '0', format.precision - ft_strlen(res), 1);
@@ -249,13 +249,6 @@ int		d_to_str(t_format format, va_list *ap)
 	return (print_buf(&res));
 }
 
-char	convert_to_hex(unsigned int n)
-{
-	if (n < 10)
-		return (n + '0');
-	return (n - 10 + 'A');
-}
-
 int		a_to_str(t_format format)
 {
 	char	*res;
@@ -269,15 +262,18 @@ int		a_to_str(t_format format)
 	return (print_buf(&res));
 }
 
-int		p_to_str(t_format format, va_list *ap)
+char	convert_to_hex(unsigned int n)
 {
-	long long	ptr;
-	char		*res;
-	char		pad;
-	int			dir;
-	int			i;
+	if (n < 10)
+		return (n + '0');
+	return (n - 10 + 'a');
+}
 
-	ptr = va_arg(*ap, long long);
+char	*ft_ptoa(long long ptr)
+{
+	char	*res;
+	int		i;
+
 	res = ft_calloc(9, sizeof(char));
 	i = 8;
 	while (i > 0)
@@ -285,6 +281,20 @@ int		p_to_str(t_format format, va_list *ap)
 		res[--i] = convert_to_hex(ptr % 16);
 		ptr /= 16;
 	}
+	return (res);
+}
+
+int		p_to_str(t_format format, va_list *ap)
+{
+	long long	ptr;
+	char		*res;
+	char		pad;
+	int			dir;
+	int			is_zero;
+
+	ptr = va_arg(*ap, long long);
+	is_zero = (!ptr) ? 1 : 0;
+	res = (!ptr) ? ft_calloc(1, sizeof(char)) : ft_ptoa(ptr);
 	if (format.width > (int)ft_strlen(res))
 	{
 		pad = (format.flag['0'] && !format.flag['-'] && !format.flag['.'] ? '0' : ' ');
