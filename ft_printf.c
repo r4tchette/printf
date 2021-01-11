@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 13:44:30 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/01/11 17:15:12 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/11 17:29:06 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,33 @@ void	init_format(t_format *format)
 	format->type = 0;
 }
 
-int		print_buf(char **buf, int len)
+int		print_buf(char **buf)
 {
+	int	len;
+
+	len = ft_strlen(*buf);
 	write(1, *buf, len);
 	free(*buf);
 	return (len);
+}
+
+int		print_buf_with_zero(char **buf, t_format format)
+{
+	int	len;
+
+	len = ft_strlen(*buf);
+	if (format.flag['-'])
+	{
+		write(1, '\0', 1);
+		write(1, *buf, len);
+	}
+	else
+	{
+		write(1, *buf, len);
+		write(1, '\0', 1);
+	}
+	free(*buf);
+	return (len + 1);
 }
 
 int		pad_char(char **res, char c, int len, int dir)
@@ -104,6 +126,7 @@ int		c_to_str(t_format format, va_list *ap)
 {
 	char	*res;
 	char	pad;
+	int		ret;
 	int		dir;
 	int		is_zero;
 
@@ -122,7 +145,9 @@ int		c_to_str(t_format format, va_list *ap)
 		dir = format.flag['-'] ? -1 : 1;
 		pad_char(&res, pad, format.width - 1, dir);
 	}
-	return (print_buf(&res, ft_strlen(res) + is_zero));
+	if (is_zero)
+		return (print_buf_with_zero(&res, format));
+	return (print_buf(&res));
 }
 
 int		s_to_str(t_format format, va_list *ap)
@@ -144,7 +169,7 @@ int		s_to_str(t_format format, va_list *ap)
 		pad = (format.flag['0'] && !format.flag['-'] ? '0' : ' ');
 		pad_char(&res, pad, format.width - ft_strlen(res), dir);
 	}
-	return (print_buf(&res, ft_strlen(res)));
+	return (print_buf(&res));
 }
 
 int		sign_int(char **str)
@@ -224,7 +249,7 @@ int		d_to_str(t_format format, va_list *ap)
 		pad_char(&res, ' ', 1, 1);
 	if (sign == -1)
 		relocate_sign(&res);
-	return (print_buf(&res, ft_strlen(res)));
+	return (print_buf(&res));
 }
 
 char	convert_to_hex(unsigned int n)
@@ -255,7 +280,7 @@ int		p_to_str(t_format format, va_list *ap)
 		else
 			pad_char(&res, ' ', format.width - ft_strlen(res), 1);
 	}
-	return (print_buf(&res, ft_strlen(res)));
+	return (print_buf(&res));
 }
 
 int		u_to_str(t_format format, va_list *ap)
@@ -273,7 +298,7 @@ int		u_to_str(t_format format, va_list *ap)
 		dir = (format.flag['-'] ? -1 : 1);
 		pad_char(&res, pad, format.width - ft_strlen(res), dir);
 	}
-	return (print_buf(&res, ft_strlen(res)));
+	return (print_buf(&res));
 }
 
 int		x_to_str(t_format format, va_list *ap)
@@ -293,7 +318,7 @@ int		x_to_str(t_format format, va_list *ap)
 		dir = (format.flag['-'] ? -1 : 1);
 		pad_char(&res, pad, format.width - ft_strlen(res), dir);
 	}
-	return (print_buf(&res, ft_strlen(res)));
+	return (print_buf(&res));
 }
 
 int		f_to_str(t_format format, va_list *ap)
@@ -329,7 +354,7 @@ int		f_to_str(t_format format, va_list *ap)
 		pad_char(&res, ' ', 1, 1);
 	if (sign == -1)
 		relocate_sign(&res);
-	return (print_buf(&res, ft_strlen(res)));
+	return (print_buf(&res));
 }
 
 int		n_to_str(va_list *ap, int len)
