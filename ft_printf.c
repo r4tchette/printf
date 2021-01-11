@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 13:44:30 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/01/11 17:40:44 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/11 17:42:40 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,11 +232,13 @@ int		d_to_str(t_format format, va_list *ap)
 	num = va_arg(*ap, int);
 	res = (num == 0) ? ft_calloc(1, sizeof(char)) : ft_itoa(num);
 	sign = sign_int(&res);
+	if (format.precision > (int)ft_strlen(res))
+		pad_char(&res, '0', format.precision - ft_strlen(res), 1);
 	if (sign == -1)
 		pad_char(&res, '-', 1, 1);
 	if (format.width > (int)ft_strlen(res))
 	{
-		pad = (format.flag['0'] && !format.flag['-'] ? '0' : ' ');
+		pad = (format.flag['0'] && !format.flag['-'] && !format.flag['.'] ? '0' : ' ');
 		dir = (format.flag['-'] ? -1 : 1);
 		pad_char(&res, pad, format.width - ft_strlen(res), dir);
 	}
