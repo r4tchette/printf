@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 13:44:30 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/01/11 17:01:48 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/11 17:06:09 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,7 @@ int		sign_int(char **str)
 	return (sign);
 }
 
-int		set_sign_position(char **str)
+int		relocate_sign(char **str)
 {
 	int		i;
 
@@ -226,7 +226,7 @@ int		d_to_str(t_format format, va_list *ap)
 	if (format.flag[' '] == 1 && is_num(res[0]))
 		pad_char(&res, ' ', 1, 1);
 	if (sign == -1)
-		set_sign_position(&res);
+		relocate_sign(&res);
 	return (print_buf(&res));
 }
 
@@ -331,7 +331,7 @@ int		f_to_str(t_format format, va_list *ap)
 	if (format.flag[' '] == 1 && is_num(res[0]))
 		pad_char(&res, ' ', 1, 1);
 	if (sign == -1)
-		set_sign_position(&res);
+		relocate_sign(&res);
 	return (print_buf(&res));
 }
 
