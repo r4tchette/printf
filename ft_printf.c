@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 13:44:30 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/01/11 16:17:17 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/11 17:00:21 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,108 +66,14 @@ void	init_format(t_format *format)
 	format->type = 0;
 }
 
-int		ft_setstr(char **dst, int len, char ch)
+int		print_buf(char **buf)
 {
-	int	i;
+	int	len;
 
-	if (!(*dst = ft_calloc(len + 1, sizeof(char))))
-		return (0);
-	i = 0;
-	while (i < len)
-	{
-		(*dst)[i] = ch;
-		i++;
-	}
-	//printf("tmp is %s\n", *dst);
-	return (1);
-}
-
-char	convert_to_hex(unsigned int n)
-{
-	if (n < 10)
-		return (n + '0');
-	return (n - 10 + 'A');
-}
-
-char	*format_p(long addr)
-{
-	char	*res;
-	int		i;
-
-	res = ft_calloc(9, sizeof(char));
-	i = 8;
-	while (i > 0)
-	{
-		res[--i] = convert_to_hex(addr % 16);
-		addr /= 16;
-	}
-	return (res);
-}
-
-char	*format_s(va_list *ap)
-{
-	char	*src;
-	char	*dst;
-
-	src = (char *)va_arg(*ap, char *);
-	if (!src)
-		dst = ft_strdup("(null)");
-	else
-		dst = ft_strdup(src);
-	return (dst);
-}
-
-int		format_type(char **res, char type, va_list *ap)
-{
-	if (type == '%')
-		*res = ft_strdup("%");
-	else if (type == 'c')
-	{
-		if (!(*res = ft_calloc(2, sizeof(char))))
-			return (0);
-		(*res)[0] = (char)va_arg(*ap, int);
-	}
-	else if (type == 's')
-		*res = format_s(ap);
-		//*res = ft_strdup((char *)va_arg(*ap, char *));
-	else if (type == 'p')
-		*res = format_p((long long)va_arg(*ap, long long));
-	else if (type == 'd' || type == 'i')
-		*res = ft_itoa(va_arg(*ap, int));
-	else if (type == 'u')
-		*res = ft_ltoa((long long)va_arg(*ap, unsigned int));
-	else if (type == 'x' || type == 'X')
-		*res = ft_xtoa((unsigned int)va_arg(*ap, unsigned int), type);
-	else
-		printf("undefined format type!\n");
-	if (!(*res))
-		return (0);
-	return (1);
-}
-
-char	*to_string(char **res, t_format format, va_list *ap)
-{
-	char	*tmp;
-	int		len;
-
-	format_type(res, format.type, ap);
-	if (format.flag['+'] && (*res)[0] != '-')
-		if (format.type == 'd' || format.type == 'i')
-			*res = ft_strjoin("+", *res);
-	len = format.width - ft_strlen(*res);
-	if (len > 0)
-	{
-		if (format.flag['0'] && !format.flag['-'])
-			ft_setstr(&tmp, format.width - ft_strlen(*res), '0');
-		else
-			ft_setstr(&tmp, format.width - ft_strlen(*res), ' ');
-		if (format.flag['-'])
-			*res = ft_strjoin(*res, tmp);
-		else
-			*res = ft_strjoin(tmp, *res);
-		free(tmp);
-	}
-	return (*res);
+	len = ft_strlen(*buf);
+	write(1, *buf, len);
+	free(*buf);
+	return (len);
 }
 
 int		pad_char(char **res, char c, int len, int dir)
@@ -197,15 +103,17 @@ int		pad_char(char **res, char c, int len, int dir)
 	return (1);
 }
 
-char	*c_to_str(t_format format, va_list *ap)
+int		c_to_str(t_format format, va_list *ap)
 {
 	char	*res;
 	char	pad;
 	int		dir;
+	int		is_zero;
 
 	if (!(res = ft_calloc(2, sizeof(char))))
 		return (0);
 	res[0] = (char)va_arg(*ap, int);
+	is_zero = (res[0] == 0) ? 1 : 0;
 	if (format.width < 0)
 	{
 		format.flag['-'] = 1;
@@ -217,10 +125,10 @@ char	*c_to_str(t_format format, va_list *ap)
 		dir = format.flag['-'] ? -1 : 1;
 		pad_char(&res, pad, format.width - 1, dir);
 	}
-	return (res);
+	return (print_buf(&res) + is_zero);
 }
 
-char	*s_to_str(t_format format, va_list *ap)
+int		s_to_str(t_format format, va_list *ap)
 {
 	char	*ptr;
 	char	*res;
@@ -239,7 +147,7 @@ char	*s_to_str(t_format format, va_list *ap)
 		pad = (format.flag['0'] && !format.flag['-'] ? '0' : ' ');
 		pad_char(&res, pad, format.width - ft_strlen(res), dir);
 	}
-	return (res);
+	return (print_buf(&res));
 }
 
 int		sign_int(char **str)
@@ -292,7 +200,7 @@ int		set_sign_position(char **str)
 	return (0);
 }
 
-char	*d_to_str(t_format format, va_list *ap)
+int		d_to_str(t_format format, va_list *ap)
 {
 	char	*res;
 	char	pad;
@@ -302,7 +210,7 @@ char	*d_to_str(t_format format, va_list *ap)
 
 	num = va_arg(*ap, int);
 	if (num == 0 && format.precision == 0)
-		return (ft_strdup(""));
+		return (0);
 	res = ft_itoa(num);
 	sign = sign_int(&res);
 	if (format.precision > (int)ft_strlen(res))
@@ -319,10 +227,17 @@ char	*d_to_str(t_format format, va_list *ap)
 		pad_char(&res, ' ', 1, 1);
 	if (sign == -1)
 		set_sign_position(&res);
-	return (res);
+	return (print_buf(&res));
 }
 
-char	*p_to_str(t_format format, va_list *ap)
+char	convert_to_hex(unsigned int n)
+{
+	if (n < 10)
+		return (n + '0');
+	return (n - 10 + 'A');
+}
+
+int		p_to_str(t_format format, va_list *ap)
 {
 	long long	ptr;
 	char		*res;
@@ -343,10 +258,10 @@ char	*p_to_str(t_format format, va_list *ap)
 		else
 			pad_char(&res, ' ', format.width - ft_strlen(res), 1);
 	}
-	return (res);
+	return (print_buf(&res));
 }
 
-char	*u_to_str(t_format format, va_list *ap)
+int		u_to_str(t_format format, va_list *ap)
 {
 	char	*res;
 	char	pad;
@@ -361,10 +276,10 @@ char	*u_to_str(t_format format, va_list *ap)
 		dir = (format.flag['-'] ? -1 : 1);
 		pad_char(&res, pad, format.width - ft_strlen(res), dir);
 	}
-	return (res);
+	return (print_buf(&res));
 }
 
-char	*x_to_str(t_format format, va_list *ap)
+int		x_to_str(t_format format, va_list *ap)
 {
 	unsigned int	num;
 	char			*res;
@@ -381,10 +296,10 @@ char	*x_to_str(t_format format, va_list *ap)
 		dir = (format.flag['-'] ? -1 : 1);
 		pad_char(&res, pad, format.width - ft_strlen(res), dir);
 	}
-	return (res);
+	return (print_buf(&res));
 }
 
-char	*f_to_str(t_format format, va_list *ap)
+int		f_to_str(t_format format, va_list *ap)
 {
 	double	decimal;
 	char	*res;
@@ -417,49 +332,17 @@ char	*f_to_str(t_format format, va_list *ap)
 		pad_char(&res, ' ', 1, 1);
 	if (sign == -1)
 		set_sign_position(&res);
-	return (res);
+	return (print_buf(&res));
 }
 
-char	*n_to_str(va_list *ap, int buf_len)
+int		n_to_str(va_list *ap, int len)
 {
 	int	*ptr;
 
 	ptr = va_arg(*ap, int *);
 	if (ptr)
-		*ptr = buf_len;
-	return (ft_strdup(""));
-}
-
-char	*to_str(t_format format, va_list *ap, int buf_len)
-{
-	char	*res;
-
-	//printf("format type : %c\n", format.type);
-	//printf("width : %d\n, precision : %d\n", format.width, format.precision);
-	res = NULL;
-	if (format.type == '%')
-		res = ft_strdup("%");
-	else if (format.type == 'c')
-		res = c_to_str(format, ap);
-	else if (format.type == 's')
-		res = s_to_str(format, ap);
-	else if (format.type == 'p')
-		res = p_to_str(format, ap);
-	else if (format.type == 'd' || format.type == 'i')
-		res = d_to_str(format, ap);
-	else if (format.type == 'u')
-		res = u_to_str(format, ap);
-	else if (format.type == 'x' || format.type == 'X')
-		res = x_to_str(format, ap);
-	else if (format.type == 'f')
-		res = f_to_str(format, ap);
-	else if (format.type == 'n')
-		res = n_to_str(ap, buf_len);
-	else
-		printf("undefined format type!\n");
-	if (!res)
-		return (0);
-	return (res);
+		*ptr = len;
+	return (len);
 }
 
 int		get_width(t_format *format, int *idx, char *str, va_list *ap)
@@ -486,7 +369,6 @@ int		get_width(t_format *format, int *idx, char *str, va_list *ap)
 		return (0);
 	format->width = width;
 	*idx = i;
-	//printf("index after get_width : %c(%d)\n", str[i], i);
 	return (1);
 }
 
@@ -516,8 +398,30 @@ int		get_precision(t_format *format, int *idx, char *str, va_list *ap)
 	return (1);
 }
 
+int		to_str(t_format format, va_list *ap, int len)
+{
+	if (format.type == '%')
+		return (write(1, "%", 1));
+	else if (format.type == 'c')
+		return (c_to_str(format, ap));
+	else if (format.type == 's')
+		return (s_to_str(format, ap));
+	else if (format.type == 'p')
+		return (p_to_str(format, ap));
+	else if (format.type == 'd' || format.type == 'i')
+		return (d_to_str(format, ap));
+	else if (format.type == 'u')
+		return (u_to_str(format, ap));
+	else if (format.type == 'x' || format.type == 'X')
+		return (x_to_str(format, ap));
+	else if (format.type == 'f')
+		return (f_to_str(format, ap));
+	else if (format.type == 'n')
+		return (n_to_str(ap, len));
+	return (-1);
+}
 
-char	*parse_format(char *str, va_list *ap, int buf_len)
+int		print_format(char *str, va_list *ap, int len)
 {
 	t_format	format;
 	int			i;
@@ -529,7 +433,7 @@ char	*parse_format(char *str, va_list *ap, int buf_len)
 		if (is_type(str[i]))
 		{
 			format.type = str[i];
-			return (to_str(format, ap, buf_len));
+			return (to_str(format, ap, len));
 		}
 		else if (is_flag(str[i]))
 			format.flag[(int)str[i++]] = 1;
@@ -545,72 +449,34 @@ char	*parse_format(char *str, va_list *ap, int buf_len)
 				get_precision(&format, &i, str, ap);
 		}
 	}
-	//printf("no type charcater\n");
 	return (0);
-}
-
-int		expand_string(char **buf, size_t *buf_size, size_t new_size)
-{
-	char	*tmp;
-
-	if (*buf_size < new_size)
-	{
-		tmp = ft_strdup(*buf);
-		free(*buf);
-		*buf_size = 2 * new_size;
-		if (!(*buf = ft_calloc(*buf_size, sizeof(char))))
-			return (0);
-		ft_strlcpy(*buf, tmp, ft_strlen(tmp) + 1);
-		free(tmp);
-	}
-	return (1);
-}
-
-int		init_buf(char **buf, size_t *buf_size, int *i)
-{
-	*buf_size = 1024;
-	if (!(*buf = ft_calloc(*buf_size, sizeof(char))))
-		return (0);
-	*i = -1;
-	return (1);
-}
-
-int		print_buf(char **buf, va_list *ap)
-{
-	int	buf_len;
-
-	buf_len = ft_strlen(*buf);
-	printf("%s", *buf);
-	free(*buf);
-	va_end(*ap);
-	return (buf_len);
 }
 
 int		ft_printf(char *str, ...)
 {
 	va_list	ap;
-	size_t	buf_size;
-	char	*buf;
-	char	*tmp;
 	int		i;
+	int		len;
+	int		ret;
 
-	if (!(init_buf(&buf, &buf_size, &i)))
-		return (-1);
+	len = 0;
+	i = -1;
 	va_start(ap, str);
 	while (str[++i])
 	{
 		if (str[i] == '%')
 		{
-			if (!(tmp = parse_format(&str[i + 1], &ap, ft_strlen(buf))))
+			ret = print_format(&str[i + 1], &ap, len);
+			if (ret < 0)
 				return (-1);
-			if (buf_size < ft_strlen(buf) + ft_strlen(tmp) + 1)
-				expand_string(&buf, &buf_size, ft_strlen(buf) + ft_strlen(tmp) + 1);
-			ft_strlcat(buf, tmp, ft_strlen(buf) + ft_strlen(tmp) + 1);
-			free(tmp);
+			len += ret;
 			while (!is_type(str[++i]));
 		}
 		else
-			ft_strlcat(buf, str + i, ft_strlen(buf) + 2);
+		{
+			write(1, str + i, 1);
+			len++;
+		}
 	}
-	return (print_buf(&buf, &ap));
+	return (len);
 }
