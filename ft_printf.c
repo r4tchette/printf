@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 13:44:30 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/01/11 17:56:34 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/11 17:57:57 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,7 +256,7 @@ char	convert_to_hex(unsigned int n)
 	return (n - 10 + 'A');
 }
 
-int		a_to_str(t_format format, va_list *ap)
+int		a_to_str(t_format format)
 {
 	char	*res;
 	char	pad;
@@ -434,7 +434,7 @@ int		get_precision(t_format *format, int *idx, char *str, va_list *ap)
 int		to_str(t_format format, va_list *ap, int len)
 {
 	if (format.type == '%')
-		return (a_to_str(format, ap));
+		return (a_to_str(format));
 	else if (format.type == 'c')
 		return (c_to_str(format, ap));
 	else if (format.type == 's')
