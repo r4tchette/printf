@@ -3,7 +3,6 @@ SRC =	ft_bzero.c\
 		ft_ftoa.c\
 		ft_itoa.c\
 		ft_printf.c\
-		ft_strappend.c\
 		ft_strdup.c\
 		ft_strjoin.c\
 		ft_strlcat.c\
