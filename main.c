@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 10:29:29 by abourin           #+#    #+#             */
-/*   Updated: 2021/01/11 14:01:26 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/11 16:06:05 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 int	main(void)
 {
 	printf(" #%02d\n", printf("%.3s", "hello"));
+	printf("%09s", "hi low");
 	return (0);
 }
 

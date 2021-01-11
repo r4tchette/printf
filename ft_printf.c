@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 13:44:30 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/01/11 14:01:27 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/11 16:06:18 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,6 +225,7 @@ char	*s_to_str(t_format format, va_list *ap)
 	char	*ptr;
 	char	*res;
 	int		dir;
+	char	pad;
 
 	if (!(ptr = va_arg(*ap, char *)))
 		res = ft_strdup("(null)");
@@ -235,7 +236,8 @@ char	*s_to_str(t_format format, va_list *ap)
 	if (format.width > (int)ft_strlen(res))
 	{
 		dir = (format.flag['-'] ? -1 : 1);
-		pad_char(&res, ' ', format.width - ft_strlen(res), dir);
+		pad = (format.flag['0'] ? '0' : ' ');
+		pad_char(&res, pad, format.width - ft_strlen(res), dir);
 	}
 	return (res);
 }
