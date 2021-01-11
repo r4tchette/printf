@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 13:44:30 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/01/11 17:29:06 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/11 17:30:56 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,13 +83,13 @@ int		print_buf_with_zero(char **buf, t_format format)
 	len = ft_strlen(*buf);
 	if (format.flag['-'])
 	{
-		write(1, '\0', 1);
+		write(1, "\0", 1);
 		write(1, *buf, len);
 	}
 	else
 	{
 		write(1, *buf, len);
-		write(1, '\0', 1);
+		write(1, "\0", 1);
 	}
 	free(*buf);
 	return (len + 1);
@@ -126,7 +126,6 @@ int		c_to_str(t_format format, va_list *ap)
 {
 	char	*res;
 	char	pad;
-	int		ret;
 	int		dir;
 	int		is_zero;
 
