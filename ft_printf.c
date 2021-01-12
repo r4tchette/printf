@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 13:44:30 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/01/12 19:44:32 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/12 19:58:49 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -274,13 +274,15 @@ char	convert_to_hex(unsigned int n)
 	return (n - 10 + 'a');
 }
 
-char	*ft_ptoa(long long ptr)
+char	*ft_ptoa(long long ptr, int precision)
 {
 	char	*res;
 	int		i;
 
-	res = ft_calloc(13, sizeof(char));
-	i = 12;
+	precision = (!ptr && precision > 0) ? 1 : precision;
+	res = ft_calloc(precision + 1, sizeof(char));
+	ft_strlcpy(res, "0x", 3);
+	i = precision;
 	while (i > 0)
 	{
 		res[--i] = convert_to_hex(ptr % 16);
@@ -299,7 +301,9 @@ int		p_to_str(t_format format, va_list *ap)
 
 	ptr = va_arg(*ap, long long);
 	is_zero = !ptr ? 1 : 0;
-	res = !ptr ? ft_strdup("0") : ft_ptoa(ptr);
+	res = ft_ptoa(ptr, (format.flag['.'] ? format.precision : 12));
+	if (format.flag['.'] && format.precision <= 0)
+		res[2] = 0;
 	if (format.width > (int)ft_strlen(res))
 	{
 		pad = (format.flag['0'] && !format.flag['-'] ? '0' : ' ');
