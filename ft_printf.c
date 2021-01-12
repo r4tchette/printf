@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 13:44:30 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/01/12 20:39:05 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/12 20:41:34 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ int		is_flag(char c)
 {
 	if (c == '-' || c == '+' || c == ' ' ||\
 		c == '#' || c == '.' || c == 'h' ||\
-		c == 'l' || c == '0')
+		c == 'l' || c == '0' || c == 'H' ||\
+		c == 'L')
 		return (1);
 	return (0);
 }
@@ -504,6 +505,8 @@ int		print_format(char *str, va_list *ap, int len)
 			else
 				get_precision(&format, &i, str, ap);
 		}
+		else
+			return (0);
 	}
 	return (0);
 }
