@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 13:44:30 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/01/12 20:29:25 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/12 20:32:20 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -301,7 +301,7 @@ int		p_to_str(t_format format, va_list *ap)
 	ptr = va_arg(*ap, long long);
 	is_zero = !ptr ? 1 : 0;
 	if (!format.flag['.'])
-		format.precision = (!ptr) ? 1 : 10;
+		format.precision = (!ptr) ? 1 : 9;
 	res = ft_ptoa(ptr, format.precision);
 	if (format.flag['.'] && format.precision <= 0)
 		res[2] = 0;
