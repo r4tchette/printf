@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 10:29:29 by abourin           #+#    #+#             */
-/*   Updated: 2021/01/12 22:15:47 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/12 22:39:13 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,10 @@ int	main(void)
 {
 	int	t;
 
-	printf("[%p]\n", &t);
-	printf("[%5p]\n", &t);
-	printf("[%05p]\n", &t);
-
-
-	printf("[%p]\n", 0);
-	printf("[%5p]\n", 0);
-	printf("[%05p]\n", 0);
+	printf("--%16.0s--\n", 0);
+	printf("--%16.1s--\n", 0);
+	printf("--%16.2s--\n", 0);
+	printf("--%16.3s--\n", 0);
 	return (0);
 }
 

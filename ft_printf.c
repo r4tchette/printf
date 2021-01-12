@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 13:44:30 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/01/12 22:33:20 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/12 22:40:59 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,15 +157,13 @@ int		c_to_str(t_format format, va_list *ap)
 
 int		s_to_str(t_format format, va_list *ap)
 {
-	char	*ptr;
+	char	*str;
 	char	*res;
 	int		dir;
 	char	pad;
 
-	if (!(ptr = va_arg(*ap, char *)))
-		res = ft_strdup("(null)");
-	else
-		res = ft_strdup(ptr);
+	str = va_arg(*ap, char *);
+	res = !str ? ft_strdup("null") : ft_strdup(str);
 	if (format.precision < 0)
 		format.flag['.'] = 0;
 	if (format.flag['.'] && format.precision < (int)ft_strlen(res))
@@ -173,7 +171,7 @@ int		s_to_str(t_format format, va_list *ap)
 	if (format.width > (int)ft_strlen(res))
 	{
 		dir = (format.flag['-'] ? -1 : 1);
-		pad = (format.flag['0'] && !format.flag['-'] ? '0' : ' ');
+		pad = (format.flag['0'] && !format.flag['-'] && str ? '0' : ' ');
 		pad_char(&res, pad, format.width - ft_strlen(res), dir);
 	}
 	return (print_buf(&res));
