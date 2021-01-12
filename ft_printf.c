@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 13:44:30 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/01/12 20:58:48 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/12 21:02:54 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -280,7 +280,7 @@ int		ptr_len(long long ptr)
 	int	len;
 
 	len = 1;
-	while (ptr)
+	while (ptr > 0)
 	{
 		ptr /= 16;
 		len++;
