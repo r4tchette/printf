@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 13:44:30 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/01/12 22:10:05 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/12 22:20:42 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -300,7 +300,7 @@ char	*ft_ptoa(long long ptr, int precision)
 	res = ft_calloc(precision + 3, sizeof(char));
 	ft_strlcpy(res, "0x", 3);
 	i = precision + 2;
-	while (i > 2)
+	while (i > 1)
 	{
 		res[i--] = convert_to_hex(ptr % 16);
 		ptr /= 16;
@@ -319,9 +319,9 @@ int		p_to_str(t_format format, va_list *ap)
 	ptr = va_arg(*ap, long long);
 	is_zero = !ptr ? 1 : 0;
 	if (!format.flag['.'])
-		format.precision = (!ptr) ? 1 : ptr_len(ptr) + 1;
+		format.precision = (!ptr) ? 1 : ptr_len(ptr);
 	res = ft_ptoa(ptr, format.precision);
-	if (format.flag['.'] && format.precision <= 0)
+	if (format.flag['.'] && format.precision <=	 0)
 		res[2] = 0;
 	if (format.width > (int)ft_strlen(res))
 	{
