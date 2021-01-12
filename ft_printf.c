@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 13:44:30 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/01/12 21:55:19 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/12 22:01:59 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,7 +283,7 @@ int		ptr_len(long long ptr)
 {
 	int	len;
 
-	len = 1;
+	len = 0;
 	while (ptr > 0)
 	{
 		ptr /= 16;
@@ -302,9 +302,8 @@ char	*ft_ptoa(long long ptr, int precision)
 	i = precision + 2;
 	while (i > 2)
 	{
-		res[i] = convert_to_hex(ptr % 16);
+		res[i--] = convert_to_hex(ptr % 16);
 		ptr /= 16;
-		i--;
 	}
 	return (res);
 }
