@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 13:44:30 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/01/12 17:21:26 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/12 19:44:32 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -279,8 +279,8 @@ char	*ft_ptoa(long long ptr)
 	char	*res;
 	int		i;
 
-	res = ft_calloc(9, sizeof(char));
-	i = 8;
+	res = ft_calloc(13, sizeof(char));
+	i = 12;
 	while (i > 0)
 	{
 		res[--i] = convert_to_hex(ptr % 16);
@@ -298,16 +298,14 @@ int		p_to_str(t_format format, va_list *ap)
 	int			is_zero;
 
 	ptr = va_arg(*ap, long long);
-	is_zero = (!ptr) ? 1 : 0;
-	res = (!ptr) ? ft_strdup("(nil)") : ft_ptoa(ptr);
+	is_zero = !ptr ? 1 : 0;
+	res = !ptr ? ft_strdup("0") : ft_ptoa(ptr);
 	if (format.width > (int)ft_strlen(res))
 	{
 		pad = (format.flag['0'] && !format.flag['-'] ? '0' : ' ');
 		dir = (format.flag['-'] ? -1 : 1);
 		pad_char(&res, pad, format.width - ft_strlen(res), dir);
 	}
-	if (is_zero)
-		print_char_with_zero(&res, format);
 	return (print_buf(&res));
 }
 
