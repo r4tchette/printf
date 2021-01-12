@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 13:44:30 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/01/12 21:27:36 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/12 21:30:40 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -289,6 +289,7 @@ int		ptr_len(long long ptr)
 		ptr /= 16;
 		len++;
 	}
+	len = (len > 9) ? 9 : len;
 	return (len);
 }
 
