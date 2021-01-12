@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 13:44:30 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/01/11 18:29:16 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/12 17:21:26 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ int		is_num(char c)
 int		is_flag(char c)
 {
 	if (c == '-' || c == '+' || c == ' ' ||\
-		c == '#' || c == '.')
+		c == '#' || c == '.' || c == 'h' ||\
+		c == 'l')
 		return (1);
 	return (0);
 }
@@ -61,6 +62,10 @@ void	init_format(t_format *format)
 	format->flag['0'] = 0;
 	format->flag['#'] = 0;
 	format->flag['.'] = 0;
+	format->flag['l'] = 0;
+	format->flag['L'] = 0;
+	format->flag['h'] = 0;
+	format->flag['H'] = 0;
 	format->width = 0;
 	format->precision = 0;
 	format->type = 0;
@@ -294,7 +299,7 @@ int		p_to_str(t_format format, va_list *ap)
 
 	ptr = va_arg(*ap, long long);
 	is_zero = (!ptr) ? 1 : 0;
-	res = (!ptr) ? ft_calloc(1, sizeof(char)) : ft_ptoa(ptr);
+	res = (!ptr) ? ft_strdup("(nil)") : ft_ptoa(ptr);
 	if (format.width > (int)ft_strlen(res))
 	{
 		pad = (format.flag['0'] && !format.flag['-'] ? '0' : ' ');
