@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 13:44:30 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/01/12 20:04:35 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/12 20:05:14 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,7 +283,7 @@ char	*ft_ptoa(long long ptr, int precision)
 	res = ft_calloc(precision + 3, sizeof(char));
 	ft_strlcpy(res, "0x", 3);
 	i = precision + 2;
-	while (i > 0)
+	while (i > 2)
 	{
 		res[--i] = convert_to_hex(ptr % 16);
 		ptr /= 16;
