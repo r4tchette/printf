@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 13:44:30 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/01/12 22:43:30 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/16 21:00:31 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,12 +163,9 @@ int		s_to_str(t_format format, va_list *ap)
 	char	pad;
 
 	str = va_arg(*ap, char *);
-	res = !str ? ft_strdup("null") : ft_strdup(str);
+	res = !str ? ft_strdup("(null)") : ft_strdup(str);
 	if (format.precision < 0)
-	{
-		format.flag['-'] = 1;
-		format.precision *= -1;
-	}
+		format.flag['.'] = 0;
 	if (format.flag['.'] && format.precision < (int)ft_strlen(res))
 		res[format.precision] = 0;
 	if (format.width > (int)ft_strlen(res))
@@ -315,10 +312,10 @@ int		p_to_str(t_format format, va_list *ap)
 	char		*res;
 	char		pad;
 	int			dir;
-	int			is_zero;
+	//int			is_zero;
 
 	ptr = va_arg(*ap, long long);
-	is_zero = !ptr ? 1 : 0;
+	//is_zero = !ptr ? 1 : 0;
 	//if (!format.flag['.'])
 	//	format.precision = !ptr ? 1 : ptr_len(ptr);
 	format.precision = (format.precision > ptr_len(ptr)) ? format.precision : ptr_len(ptr);

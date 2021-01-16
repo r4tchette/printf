@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 10:29:29 by abourin           #+#    #+#             */
-/*   Updated: 2021/01/12 22:39:13 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/16 20:46:18 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,13 @@
 
 int	main(void)
 {
-	int	t;
+	char	*str = NULL;
 
-	printf("--%16.0s--\n", 0);
-	printf("--%16.1s--\n", 0);
-	printf("--%16.2s--\n", 0);
-	printf("--%16.3s--\n", 0);
+	printf("--%16.0s--\n", str);
+	printf("--%16.1s--\n", str);
+	printf("--%16.2s--\n", str);
+	printf("--%16.3s--\n", str);
+	printf("--%-2.*s--\n", -2, str);
 	return (0);
 }
 
@@ -125,7 +126,7 @@ int	main(void)
 	printf("#18 : [%- 0.*X]\n", 10, i);
 	return (0);
 }
-/*
+*/
 /*
 int main(void) {
 	// test for %d
