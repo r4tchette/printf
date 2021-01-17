@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 10:29:29 by abourin           #+#    #+#             */
-/*   Updated: 2021/01/17 15:12:32 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/17 15:25:35 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,29 +15,24 @@
 
 #include "libft.h"
 
-#define printf ft_printf
+//#define printf ft_printf
 
 int	main(void)
 {
 	int d = -12;
-	int ret;
 
-	printf("-->|%*.*d|<--\n", 4, -2, d);
-	printf("-->|%*.*d|<--\n", 4, -1, d);
-	printf("-->|%*.*d|<--\n", 4, 0, d);
-	printf("-->|%*.*d|<--\n", 4, 1, d);
-	printf("-->|%*.*d|<--\n", 4, 2, d);
+	printf("-->|%0*.*d|<--\n", 3, 2, d);
+	printf("-->|%0*.*d|<--\n", 3, 3, d);
+	printf("-->|%0*.*d|<--\n", 3, 4, d);
+	printf("-->|%0*.*d|<--\n", 4, -4, d);
+	printf("-->|%0*.*d|<--\n", 4, -3, d);
 
 	d = 198;
-	printf("-->|%4.2d|<--\n", d);
-	printf("-->|%4.3d|<--\n", d);
-	printf("-->|%4.4d|<--\n", d);
-	printf("-->|%4d|<--\n", d);
-	printf("-->|%-4.d|<--\n", d);
-
-	d = 0;
-	ret = printf("-->|%.*d|<--\t", -4, d);
-	printf("ret : %d\n", ret);
+	printf("-->|%04.*d|<--\n", -2, d);
+	printf("-->|%04.*d|<--\n", -1, d);
+	printf("-->|%04.*d|<--\n", 0, d);
+	printf("-->|%04.*d|<--\n", 1, d);
+	printf("-->|%04.*d|<--\n", 2, d);
 	return (0);
 }
 
