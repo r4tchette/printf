@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 13:44:30 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/01/16 21:00:31 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/17 13:48:00 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -318,11 +318,11 @@ int		p_to_str(t_format format, va_list *ap)
 	//is_zero = !ptr ? 1 : 0;
 	//if (!format.flag['.'])
 	//	format.precision = !ptr ? 1 : ptr_len(ptr);
-	format.precision = (format.precision > ptr_len(ptr)) ? format.precision : ptr_len(ptr);
+	format.precision = (format.precision < ptr_len(ptr)) ? ptr_len(ptr) : format.precision;
 	if (!format.flag['.'] && !ptr)
 		format.precision = 1;
 	res = ft_ptoa(ptr, format.precision);
-	if (format.flag['.'] && format.precision <=	 0)
+	if (format.flag['.'] && format.precision <= 0)
 		res[2] = 0;
 	if (format.width > (int)ft_strlen(res))
 	{
@@ -342,6 +342,7 @@ int		u_to_str(t_format format, va_list *ap)
 
 	num = va_arg(*ap, int);
 	res = (!num && format.flag['.']) ? ft_calloc(1, sizeof(char)) : ft_utoa(num);
+	format.precision = (format.precision < 0) ? ft_strlen(res) : format.precision;
 	if (format.precision > (int)ft_strlen(res))
 		pad_char(&res, '0', format.precision - ft_strlen(res), 1);
 	if (format.width > (int)ft_strlen(res))
@@ -363,8 +364,8 @@ int		x_to_str(t_format format, va_list *ap)
 	int				dir;
 
 	num = va_arg(*ap, unsigned int);
-
 	res = (!num && format.flag['.']) ? ft_calloc(1, sizeof(char)) : ft_xtoa(num, format.type);
+	format.precision = (format.precision < ft_strlen(res)) ? ft_strlen(res) : format.precision;
 	if (format.precision > (int)ft_strlen(res))
 		pad_char(&res, '0', format.precision - ft_strlen(res), 1);
 	if (format.width > (int)ft_strlen(res))
@@ -394,6 +395,7 @@ int		f_to_str(t_format format, va_list *ap)
 		decimal *= -1;
 	}
 	res = ft_ftoa(decimal, format.precision);
+	format.precision = (format.precision < ft_strlen(res)) ? ft_strlen(res) : format.precision;
 	if (format.precision > (int)ft_strlen(res))
 		pad_char(&res, '0', format.precision - ft_strlen(res), 1);
 	if (sign == -1)

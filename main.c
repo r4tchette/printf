@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 10:29:29 by abourin           #+#    #+#             */
-/*   Updated: 2021/01/16 20:46:18 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/16 21:12:20 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,22 @@
 
 #include "libft.h"
 
-#define printf ft_printf
+//#define printf ft_printf
 
 int	main(void)
 {
-	char	*str = NULL;
+	char	*s = NULL;
 
-	printf("--%16.0s--\n", str);
-	printf("--%16.1s--\n", str);
-	printf("--%16.2s--\n", str);
-	printf("--%16.3s--\n", str);
-	printf("--%-2.*s--\n", -2, str);
+	printf("-->|%*.0s|<--\n", -2, s);
+	printf("-->|%*.0s|<--\n", -1, s);
+	printf("-->|%*.0s|<--\n", 0, s);
+	printf("-->|%*.0s|<--\n", 1, s);
+	printf("-->|%*.0s|<--\n", 2, s);
+	printf("-->|%16.0s|<--\n", s);
+	printf("-->|%16.0s|<--\n", s);
+	printf("-->|%16.1s|<--\n", s);
+	printf("-->|%16.2s|<--\n", s);
+	printf("-->|%16.3s|<--\n", s);
 	return (0);
 }
 
