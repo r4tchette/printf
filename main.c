@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 10:29:29 by abourin           #+#    #+#             */
-/*   Updated: 2021/01/17 15:04:07 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/17 15:10:50 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,36 +19,25 @@
 
 int	main(void)
 {
-	char	*s = NULL;
-	int		d = -12;
+	int d = -12;
+	int ret;
 
-	printf("-->|%*.0s|<--\n", -2, s);
-	printf("-->|%*.0s|<--\n", -1, s);
-	printf("-->|%*.0s|<--\n", 0, s);
-	printf("-->|%*.0s|<--\n", 1, s);
-	printf("-->|%*.0s|<--\n", 2, s);
-	printf("-->|%16.0s|<--\n", s);
-	printf("-->|%16.0s|<--\n", s);
-	printf("-->|%16.1s|<--\n", s);
-	printf("-->|%16.2s|<--\n", s);
-	printf("-->|%16.3s|<--\n", s);
-	printf("\n");
+	printf("-->|%*.*d|<--\n", 4, -2, d);
+	printf("-->|%*.*d|<--\n", 4, -1, d);
+	printf("-->|%*.*d|<--\n", 4, 0, d);
+	printf("-->|%*.*d|<--\n", 4, 1, d);
+	printf("-->|%*.*d|<--\n", 4, 2, d);
 
-	printf("-->|%0*d|<--\n", 1, d);
-	printf("-->|%0*d|<--\n", 2, d);
-	printf("-->|%0*d|<--\n", 3, d);
-	printf("-->|%0*d|<--\n\n", 4, d);
-
-	printf("-->|%*.0d|<--\n", 1, d);
-	printf("-->|%*.0d|<--\n", 2, d);
-	printf("-->|%*.0d|<--\n", 3, d);
-	printf("-->|%*.0d|<--\n\n", 4, d);
-	printf("-->|%*.1d|<--\n\n", 4, d);
-
-	printf("-->|%04d|<--\n", d);
+	d = 198;
+	printf("-->|%4.2d|<--\n", d);
+	printf("-->|%4.3d|<--\n", d);
+	printf("-->|%4.4d|<--\n", d);
+	printf("-->|%4d|<--\n", d);
 	printf("-->|%-4.d|<--\n", d);
-	printf("-->|%-4.*d|<--\n", -4, d);
-	printf("-->|%-4.*d|<--\n", -3, d);
+
+	d = 0;
+	ret = printf("-->|%.*d|<--\t", -4, d);
+	printf("ret : %d\n", ret);
 	return (0);
 }
 
