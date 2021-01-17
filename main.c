@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 10:29:29 by abourin           #+#    #+#             */
-/*   Updated: 2021/01/17 14:20:06 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/17 15:04:07 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 
 #include "libft.h"
 
-#define printf ft_printf
+//#define printf ft_printf
 
 int	main(void)
 {
 	char	*s = NULL;
-	int		d = 198;
+	int		d = -12;
 
 	printf("-->|%*.0s|<--\n", -2, s);
 	printf("-->|%*.0s|<--\n", -1, s);
@@ -37,7 +37,14 @@ int	main(void)
 	printf("-->|%0*d|<--\n", 1, d);
 	printf("-->|%0*d|<--\n", 2, d);
 	printf("-->|%0*d|<--\n", 3, d);
-	printf("-->|%0*d|<--\n", 4, d);
+	printf("-->|%0*d|<--\n\n", 4, d);
+
+	printf("-->|%*.0d|<--\n", 1, d);
+	printf("-->|%*.0d|<--\n", 2, d);
+	printf("-->|%*.0d|<--\n", 3, d);
+	printf("-->|%*.0d|<--\n\n", 4, d);
+	printf("-->|%*.1d|<--\n\n", 4, d);
+
 	printf("-->|%04d|<--\n", d);
 	printf("-->|%-4.d|<--\n", d);
 	printf("-->|%-4.*d|<--\n", -4, d);
