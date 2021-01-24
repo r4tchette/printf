@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 13:44:30 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/01/24 19:33:21 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/24 19:39:43 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,14 +167,14 @@ int		s_to_str(t_format format, va_list *ap)
 	pad = ' ';
 	if (format.precision < 0)
 		format.flag['.'] = 0;
-	if (format.flag['.'] && format.precision == 0 && str)
+	if (format.flag['.'] && format.precision == 0 && !str)
 		pad = '0';
 	if (format.flag['.'] && format.precision < (int)ft_strlen(res))
 		res[format.precision] = 0;
 	if (format.width > (int)ft_strlen(res))
 	{
 		dir = (format.flag['-'] ? -1 : 1);
-		//pad = (format.flag['0'] && !format.flag['-'] && str ? '0' : pad);
+		pad = (format.flag['0'] && !format.flag['-'] && !str ? '0' : pad);
 		pad_char(&res, pad, format.width - ft_strlen(res), dir);
 	}
 	return (print_buf(&res));
