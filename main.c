@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 10:29:29 by abourin           #+#    #+#             */
-/*   Updated: 2021/01/24 19:40:22 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/25 15:55:24 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,35 @@
 
 #include "libft.h"
 
-//#define printf ft_printf
+#define printf ft_printf
 
+int	main(void)
+{
+	int	d = 198;
+
+	printf("|%-4.2d|\n", d);
+	printf("|%-4.3d|\n", d);
+	printf("|%-4.4d|\n", d);
+	printf("|%-4.5d|\n", d);
+	printf("\n");
+
+	d = -135;
+	printf("|%-4.d|\n", d);
+	printf("|%-4.*d|\n", -1, d);
+	printf("|%-4.*d|\n", 0, d);
+	printf("|%-4.*d|\n", 1, d);
+	printf("\n");
+
+	d = 0;
+	printf("|%.d|\n", d);
+	printf("|%.*d|\n", -1, d);
+	printf("|%.*d|\n", 0, d);
+	printf("|%.*d|\n", 1, d);
+	printf("\n");
+	return (0);
+}
+
+/*
 int	main(void)
 {
 	char *s = strdup("abc");
@@ -41,6 +68,7 @@ int	main(void)
 	printf("-->|%-16.3s|<--\n", s);
 	return (0);
 }
+*/
 
 /*
 int	main(void)
