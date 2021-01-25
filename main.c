@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 10:29:29 by abourin           #+#    #+#             */
-/*   Updated: 2021/01/25 15:55:24 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/01/25 16:02:13 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 #include "libft.h"
 
-#define printf ft_printf
+//#define printf ft_printf
 
 int	main(void)
 {
@@ -39,6 +39,24 @@ int	main(void)
 	printf("|%.*d|\n", -1, d);
 	printf("|%.*d|\n", 0, d);
 	printf("|%.*d|\n", 1, d);
+	printf("\n");
+
+	d = -12;
+	printf("|%*.0d|\n", 1, d);
+	printf("|%*.0d|\n", 2, d);
+	printf("|%*.0d|\n", 3, d);
+	printf("|%*.0d|\n", 4, d);
+	printf("\n");
+
+	d = 12;
+	printf("|%*.0d|\n", 1, d);
+	printf("|%*.0d|\n", 2, d);
+	printf("|%*.0d|\n", 3, d);
+	printf("|%*.0d|\n", 4, d);
+	printf("\n");
+
+	d = 198;
+	printf("|%04d|\n", d);
 	printf("\n");
 	return (0);
 }
