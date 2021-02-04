@@ -55,4 +55,5 @@ dkms.conf
 settings.json
 *.txt
 42TESTERS-PRINTF/
-*.out
+pft_2019/
+*.outpft_2019/
