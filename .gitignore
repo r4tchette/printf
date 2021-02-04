@@ -55,3 +55,4 @@ dkms.conf
 settings.json
 *.txt
 42TESTERS-PRINTF/
+*.out
