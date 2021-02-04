@@ -240,6 +240,7 @@ int		d_to_str(t_format format, va_list *ap)
 
 	num = va_arg(*ap, int);
 //	res = (!num || (format.flag['.'] && format.precision == 0)) ? ft_calloc(1, sizeof(char)) : ft_itoa(num);
+//	printf("[.] : %d, [ ] : %d, [-] : %d, [0] : %d\n", format.flag['.'], format.flag[' '], format.flag['-'], format.flag['0']);
 	res = (num == 0 && format.flag['.'] && format.precision == 0) ? ft_calloc(1, sizeof(char)) : ft_itoa(num);
 	sign = sign_int(&res);
 	pad = (format.flag['.'] && format.precision > 0) ? '0' : ' ';
@@ -524,7 +525,7 @@ int		print_format(char *str, va_list *ap, int len)
 			format.type = str[i];
 			return (to_str(format, ap, len));
 		}
-		else if (is_flag(str[i]))
+		else if (is_flag(str[i]) && !format.flag['.'])
 			format.flag[(int)str[i++]] += 1;
 		else if (is_num(str[i]) || str[i] == '*')
 		{

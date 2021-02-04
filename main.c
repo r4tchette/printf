@@ -16,7 +16,29 @@
 #include "libft.h"
 
 //#define printf ft_printf
+#define NUM 123
+#define FORM "%4.0d"
 
+void	printf_d(int num)
+{
+	int	ret;
+
+	write(1, "ft_printf : |", 13);
+	ret = ft_printf(FORM, num);
+	printf("| (%d)\n", ret);
+
+	printf("   printf : |");
+	ret = printf(FORM, num);
+	printf("| (%d)\n", ret);
+}
+
+int		main(void)
+{
+	printf("NUM : (%d), \tFORM : (%s)\n\n", NUM, FORM);
+	printf_d(NUM);
+}
+
+/*
 int	main(void)
 {
 	int	d = 198;
@@ -68,6 +90,7 @@ int	main(void)
 	printf("\n");
 	return (0);
 }
+*/
 
 /*
 int	main(void)
