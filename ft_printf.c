@@ -167,8 +167,8 @@ int		s_to_str(t_format format, va_list *ap)
 	pad = ' ';
 	if (format.precision < 0)
 		format.flag['.'] = 0;
-	if (format.flag['.'] && format.precision == 0 && !str)
-		pad = '0';
+//	if (format.flag['.'] && format.precision == 0 && !str)
+//		pad = ' ';
 	if (format.flag['.'] && format.precision < (int)ft_strlen(res))
 		res[format.precision] = 0;
 	if (format.width > (int)ft_strlen(res))
@@ -284,7 +284,7 @@ int		a_to_str(t_format format)
 	}
 	if (format.width > 1)
 	{
-		pad = format.flag['0'] ? '0' : ' ';
+		pad = (format.flag['0'] && !format.flag['-']) ? '0' : ' ';
 		dir = format.flag['-'] ? -1 : 1;
 		pad_char(&res, pad, format.width - 1, dir);
 	}

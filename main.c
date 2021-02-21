@@ -20,7 +20,7 @@
 #define FORM_D "%02.0d"
 
 #define STR "str"
-#define FORM_S "%-10s"
+#define FORM_S "%-10.s"
 
 
 void	printf_s(void)
@@ -28,11 +28,11 @@ void	printf_s(void)
 	int	ret;
 
 	write(1, "ft_printf : |", 13);
-	ret = ft_printf(FORM_S, STR);
+	ret = ft_printf(FORM_S, NULL);
 	printf("| (%d)\n", ret);
 
 	printf("   printf : |");
-	ret = printf(FORM_S, STR);
+	ret = printf(FORM_S, NULL);
 	printf("| (%d)\n", ret);
 }
 
@@ -68,11 +68,11 @@ void	printf_a(void)
 	int	ret;
 
 	write(1, "ft_printf : |", 13);
-	ret = ft_printf("%*.*%", -3, 3);
+	ret = ft_printf("%-05%");
 	printf("| (%d)\n", ret);
 
 	printf("   printf : |");
-	ret = printf("%*.*%", -3, 3);
+	ret = printf("%-05%");
 	printf("| (%d)\n", ret);
 }
 
@@ -80,8 +80,8 @@ int		main(void)
 {
 	//printf("NUM : (%d), \tFORM : (%s)\n\n", NUM, FORM_D);
 	//printf_u();
-	//printf_s();
-	printf_a();
+	printf_s();
+	//printf_a();
 	return (0);
 }
 
