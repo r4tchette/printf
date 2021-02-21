@@ -68,11 +68,11 @@ void	printf_a(void)
 	int	ret;
 
 	write(1, "ft_printf : |", 13);
-	ret = ft_printf("%%%dbada%s%%**%s**-d%%0*d%-12s0*@", 4200, "bada", "%%", "**", "-12");
+	ret = ft_printf("%*.*%", -3, 3);
 	printf("| (%d)\n", ret);
 
 	printf("   printf : |");
-	ret = printf("%%%dbada%s%%**%s**-d%%0*d%-12s0*@", 4200, "bada", "%%", "**", "-12");
+	ret = printf("%*.*%", -3, 3);
 	printf("| (%d)\n", ret);
 }
 
