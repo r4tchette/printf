@@ -353,8 +353,13 @@ int		u_to_str(t_format format, va_list *ap)
 	int				dir;
 
 	num = va_arg(*ap, int);
+	if (format.precision < 0)
+	{
+		format.flag['.'] = 0;
+		format.precision = 0;
+	}
 	res = (!num && format.flag['.']) ? ft_calloc(1, sizeof(char)) : ft_utoa(num);
-	format.precision = (format.precision < 0) ? 0 : format.precision;
+	//format.precision = (format.precision < 0) ? 0 : format.precision;
 	if (format.precision > (int)ft_strlen(res))
 		pad_char(&res, '0', format.precision - ft_strlen(res), 1);
 	if (format.width > (int)ft_strlen(res))
@@ -376,8 +381,13 @@ int		x_to_str(t_format format, va_list *ap)
 	int				dir;
 
 	num = va_arg(*ap, unsigned int);
+	if (format.precision < 0)
+	{
+		format.flag['.'] = 0;
+		format.precision = 0;
+	}
 	res = (!num && format.flag['.']) ? ft_calloc(1, sizeof(char)) : ft_xtoa(num, format.type);
-	format.precision = (format.precision < 0) ? 0 : format.precision;
+	//format.precision = (format.precision < 0) ? 0 : format.precision;
 	if (format.precision > (int)ft_strlen(res))
 		pad_char(&res, '0', format.precision - ft_strlen(res), 1);
 	if (format.width > (int)ft_strlen(res))

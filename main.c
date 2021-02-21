@@ -22,6 +22,7 @@
 #define STR "str"
 #define FORM_S "%-10s"
 
+
 void	printf_s(void)
 {
 	int	ret;
@@ -49,11 +50,38 @@ void	printf_d(void)
 	printf("| (%d)\n", ret);
 }
 
+void	printf_u(void)
+{
+	int	ret;
+
+	write(1, "ft_printf : |", 13);
+	ret = ft_printf("%*.*u", 3, -1, 0);
+	printf("| (%u)\n", ret);
+
+	printf("   printf : |");
+	ret = printf("%*.*u", 3, -1, 0);
+	printf("| (%u)\n", ret);
+}
+
+void	printf_a(void)
+{
+	int	ret;
+
+	write(1, "ft_printf : |", 13);
+	ret = ft_printf("%%%dbada%s%%**%s**-d%%0*d%-12s0*@", 4200, "bada", "%%", "**", "-12");
+	printf("| (%d)\n", ret);
+
+	printf("   printf : |");
+	ret = printf("%%%dbada%s%%**%s**-d%%0*d%-12s0*@", 4200, "bada", "%%", "**", "-12");
+	printf("| (%d)\n", ret);
+}
+
 int		main(void)
 {
-	printf("NUM : (%d), \tFORM : (%s)\n\n", NUM, FORM_D);
-	printf_d();
+	//printf("NUM : (%d), \tFORM : (%s)\n\n", NUM, FORM_D);
+	//printf_u();
 	//printf_s();
+	printf_a();
 	return (0);
 }
 
