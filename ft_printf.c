@@ -167,15 +167,12 @@ int		s_to_str(t_format format, va_list *ap)
 	pad = ' ';
 	if (format.precision < 0)
 		format.flag['.'] = 0;
-//	if (format.flag['.'] && format.precision == 0 && !str)
-//		pad = ' ';
 	if (format.flag['.'] && format.precision < (int)ft_strlen(res))
 		res[format.precision] = 0;
 	if (format.width > (int)ft_strlen(res))
 	{
 		dir = (format.flag['-'] ? -1 : 1);
 		pad = (format.flag['0'] && !format.flag['-'] ? '0' : pad);
-		//pad = (format.flag['0'] && !format.flag['-'] && !str ? '0' : pad);
 		pad_char(&res, pad, format.width - ft_strlen(res), dir);
 	}
 	return (print_buf(&res));
@@ -240,9 +237,7 @@ int		d_to_str(t_format format, va_list *ap)
 	int		num;
 
 	num = va_arg(*ap, int);
-	//printf("num : %d, width : %d, precision : %d, [.] : %d\n", num, format.width, format.precision, format.flag['.']);
 	res = (num == 0 && format.flag['.'] && format.precision == 0) ? ft_calloc(1, sizeof(char)) : ft_itoa(num);
-	//printf("res : <%s>\n", res);
 	sign = sign_int(&res);
 	pad = (format.flag['.'] && format.precision > 0) ? '0' : ' ';
 	if (format.precision > (int)ft_strlen(res))
@@ -256,7 +251,6 @@ int		d_to_str(t_format format, va_list *ap)
 	}
 	if (format.width > (int)ft_strlen(res))
 	{
-		//pad = (format.flag['0'] && !format.flag['-'] && !(format.flag['.'] && format.precision > 0) && num) ? '0' : ' ';
 		pad = (format.flag['0'] && !format.flag['-'] && pad == ' ' && !(format.flag['.'] && format.precision == 0 && num == 0)) ? '0' : ' ';
 		pad = (format.flag['0'] && format.flag['.'] && format.precision == 0) ? ' ' : pad;
 		dir = (format.flag['-']) ? -1 : 1;
@@ -333,12 +327,8 @@ int		p_to_str(t_format format, va_list *ap)
 	char		*res;
 	char		pad;
 	int			dir;
-	//int			is_zero;
 
 	ptr = va_arg(*ap, long long);
-	//is_zero = !ptr ? 1 : 0;
-	//if (!format.flag['.'])
-	//	format.precision = !ptr ? 1 : ptr_len(ptr);
 	format.precision = (format.precision < ptr_len(ptr)) ? ptr_len(ptr) : format.precision;
 	if (!format.flag['.'] && !ptr)
 		format.precision = 1;
@@ -368,7 +358,6 @@ int		u_to_str(t_format format, va_list *ap)
 		format.precision = 0;
 	}
 	res = (!num && format.flag['.']) ? ft_calloc(1, sizeof(char)) : ft_utoa(num);
-	//format.precision = (format.precision < 0) ? 0 : format.precision;
 	if (format.precision > (int)ft_strlen(res))
 		pad_char(&res, '0', format.precision - ft_strlen(res), 1);
 	if (format.width > (int)ft_strlen(res))
@@ -396,7 +385,6 @@ int		x_to_str(t_format format, va_list *ap)
 		format.precision = 0;
 	}
 	res = (!num && format.flag['.']) ? ft_calloc(1, sizeof(char)) : ft_xtoa(num, format.type);
-	//format.precision = (format.precision < 0) ? 0 : format.precision;
 	if (format.precision > (int)ft_strlen(res))
 		pad_char(&res, '0', format.precision - ft_strlen(res), 1);
 	if (format.width > (int)ft_strlen(res))
