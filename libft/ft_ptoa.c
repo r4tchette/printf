@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calloc.c                                        :+:      :+:    :+:   */
+/*   ft_ptoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -19,18 +19,6 @@ char	convert_to_hex(unsigned int n)
 	return (n - 10 + 'a');
 }
 
-int		ptr_len(long long ptr)
-{
-	int	len;
-
-	len = 0;
-	while (ptr > 0)
-	{
-		len++;
-		ptr /= 16;
-	}
-	return (len);
-}
 
 char	*ft_ptoa(long long ptr, int precision)
 {
