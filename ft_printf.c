@@ -15,7 +15,7 @@
 #include <stdarg.h>
 #include <stdlib.h>
 
-#include "libft.h"
+#include "libft/libft.h"
 
 #include <string.h>
 
@@ -285,13 +285,6 @@ int		a_to_str(t_format format)
 	return (print_buf(&res));
 }
 
-char	convert_to_hex(unsigned int n)
-{
-	if (n < 10)
-		return (n + '0');
-	return (n - 10 + 'a');
-}
-
 int		ptr_len(long long ptr)
 {
 	int	len;
@@ -303,22 +296,6 @@ int		ptr_len(long long ptr)
 		ptr /= 16;
 	}
 	return (len);
-}
-
-char	*ft_ptoa(long long ptr, int precision)
-{
-	char	*res;
-	int		i;
-
-	res = ft_calloc(precision + 3, sizeof(char));
-	ft_strlcpy(res, "0x", 3);
-	i = precision + 1;
-	while (i > 1)
-	{
-		res[i--] = convert_to_hex(ptr % 16);
-		ptr /= 16;
-	}
-	return (res);
 }
 
 int		p_to_str(t_format format, va_list *ap)

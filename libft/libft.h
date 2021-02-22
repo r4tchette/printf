@@ -27,6 +27,7 @@ char			*ft_ltoa(long long n);
 char			*ft_xtoa(unsigned int n, char c);
 char			*ft_utoa(unsigned int n);
 char			*ft_ftoa(double decimal, int precision);
+char            *ft_ptoa(long long ptr, int precision);
 int				ft_strappend(char **s, char const c);
 int				ft_printf(char *str, ...);
 
