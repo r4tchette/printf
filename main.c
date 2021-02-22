@@ -13,7 +13,8 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "libft.h"
+#include "libftprintf/libftprintf.h"
+#include "libft/libft.h"
 
 //#define printf ft_printf
 #define NUM 8
