@@ -66,20 +66,12 @@ int			d_to_str(t_format format, va_list *ap)
 		pad_char(&res, pad, format.precision - ft_strlen(res), 1);
 	if (sign == -1)
 		pad_char(&res, '-', 1, 1);
-	if (format.width < 0)
-	{
-		format.flag['-'] = 1;
-		format.width *= -1;
-	}
 	if (format.width > (int)ft_strlen(res))
 	{
-		pad = (format.flag['0'] && !format.flag['-'] && pad == ' ' && !(format.flag['.'] && format.precision == 0 && num == 0)) ? '0' : ' ';
-		pad = (format.flag['0'] && format.flag['.'] && format.precision == 0) ? ' ' : pad;
+		pad = (format.flag['0'] && !format.flag['-'] && pad == ' ' && !(format.flag['.'] && format.precision == 0)) ? '0' : ' ';
 		dir = (format.flag['-']) ? -1 : 1;
 		pad_char(&res, pad, format.width - ft_strlen(res), dir);
 	}
-	if (format.flag[' '] == 1 && is_num(res[0]))
-		pad_char(&res, ' ', 1, 1);
 	if (sign == -1)
 		relocate_sign(&res);
 	return (print_buf(&res));
