@@ -1,5 +1,18 @@
 #include "libftprintf.h"
 
+static int	sign_double(double *decimal)
+{
+	int	sign;
+
+	sign = 1;
+	if (*decimal < 0)
+	{
+		sign *= -1;
+		*decimal *= -1;
+	}
+	return (sign);
+}
+
 static int	relocate_sign(char **str)
 {
 	int		i;
@@ -36,12 +49,7 @@ int		f_to_str(t_format format, va_list *ap)
 	int		sign;
 
 	decimal = va_arg(*ap, double);
-	sign = 1;
-	if (decimal < 0)
-	{
-		sign = -1;
-		decimal *= -1;
-	}
+	sign = sign_double(&decimal);
 	res = ft_ftoa(decimal, format.precision);
 	format.precision = (format.precision < 0) ? 0 : format.precision;
 	if (format.precision > (int)ft_strlen(res))
@@ -57,8 +65,6 @@ int		f_to_str(t_format format, va_list *ap)
 		else
 			pad_char(&res, pad, format.width - ft_strlen(res), dir);
 	}
-	if (format.flag[' '] == 1 && is_num(res[0]))
-		pad_char(&res, ' ', 1, 1);
 	if (sign == -1)
 		relocate_sign(&res);
 	return (print_buf(&res));
