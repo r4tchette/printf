@@ -59,6 +59,15 @@ static int		round_up(char *buf, int idx)
 	return (1);
 }
 
+static void		init(int *precision, char **buf, int *integer, double *decimal, int *idx)
+{
+	*precision = (*precision < 0) ? 6 : *precision;
+	*buf = ft_calloc(*precision + 1, sizeof(char));
+	*integer = (int)(*decimal);
+	*decimal -= (int)(*decimal);
+	*idx = 0;
+}
+
 char			*ft_ftoa(double decimal, int precision)
 {
 	char	*res;
@@ -66,28 +75,23 @@ char			*ft_ftoa(double decimal, int precision)
 	int		integer;
 	int		idx;
 
-	precision = (precision < 0) ? 6 : precision;
-	buf = ft_calloc(precision + 1, sizeof(char));
-	integer = (int)decimal;
-	decimal -= (int)decimal;
-	idx = 0;
-	if (precision == 0)
-		return (ft_itoa(integer));
-		//buf[idx++] = '0';
-	else
-		while(idx < precision)
-		{
-			decimal *= 10.0;
-			buf[idx++] = (int)decimal + '0';
-			decimal -= (int)decimal;
-		}
+	init(&precision, &buf, &integer, &decimal, &idx);
+	while(idx < precision)
+	{
+		decimal *= 10.0;
+		buf[idx++] = (int)decimal + '0';
+		decimal -= (int)decimal;
+	}
 	buf[idx--] = 0;
 	if (decimal > 0.5 || (decimal == 0.5 && is_odd(buf[idx] - '0')))
 		integer += round_up(buf, idx);
 	res = ft_calloc(int_len(integer) + ft_strlen(buf) + 2, sizeof(char));
 	ft_strlcpy(res, ft_itoa(integer), int_len(integer) + 1);
-	ft_strlcat(res, ".", ft_strlen(res) + 2);
-	ft_strlcat(res, buf, ft_strlen(res) + ft_strlen(buf) + 1);
+	if (precision != 0)
+	{
+		ft_strlcat(res, ".", ft_strlen(res) + 2);
+		ft_strlcat(res, buf, ft_strlen(res) + ft_strlen(buf) + 1);
+	}
 	free(buf);
 	return (res);
 }

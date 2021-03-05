@@ -23,10 +23,22 @@ static int	sign_int(char **str)
 	return (sign);
 }
 
-static int	relocate_sign(char **str)
+static int	relocate_sign(char **str, t_format format, int sign)
 {
+	char	sig;
 	int		i;
 
+	if (sign == -1)
+		sig = '-';
+	else
+	{
+		if (format.flag['+'])
+			sig = '+';
+		else if (format.flag[' '])
+			sig = ' ';
+		else
+			return (0);
+	}
 	i = 0;
 	while ((*str)[i])
 	{
@@ -50,6 +62,16 @@ static int	relocate_sign(char **str)
 	return (0);
 }
 
+void		prepend_sign(char **res, t_format format, int sign)
+{
+	if (sign == -1)
+		return ;
+	if (format.flag['+'])
+		pad_char(res, '+', 1, 1);
+	else if (format.flag[' '])
+		pad_char(res, ' ', 1, 1);
+}
+
 int			d_to_str(t_format format, va_list *ap)
 {
 	char	*res;
@@ -66,13 +88,13 @@ int			d_to_str(t_format format, va_list *ap)
 		pad_char(&res, pad, format.precision - ft_strlen(res), 1);
 	if (sign == -1)
 		pad_char(&res, '-', 1, 1);
+	prepend_sign(&res, format, sign);
 	if (format.width > (int)ft_strlen(res))
 	{
 		pad = (format.flag['0'] && !format.flag['-'] && pad == ' ' && !(format.flag['.'] && format.precision == 0)) ? '0' : ' ';
 		dir = (format.flag['-']) ? -1 : 1;
 		pad_char(&res, pad, format.width - ft_strlen(res), dir);
 	}
-	if (sign == -1)
-		relocate_sign(&res);
+	relocate_sign(&res, format, sign);
 	return (print_buf(&res));
 }

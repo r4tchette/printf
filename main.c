@@ -17,8 +17,8 @@
 #include "libft/libft.h"
 
 //#define printf ft_printf
-#define NUM 8
-#define FORM_D "%02.0d"
+#define NUM 198
+#define FORM_D "% -1d"
 
 #define STR "str"
 #define FORM_S "%-10.s"
@@ -77,12 +77,47 @@ void	printf_a(void)
 	printf("| (%d)\n", ret);
 }
 
+void	printf_f(void)
+{
+	int	ret;
+	double	f = 0.814;
+
+	write(1, "ft_printf : |", 13);
+	ret = ft_printf("%-4.0f", f);
+	printf("| (%d)\n", ret);
+
+	write(1, "ft_printf : |", 13);
+	ret = ft_printf("%-4.1f", f);
+	printf("| (%d)\n", ret);
+
+
+	write(1, "   printf : |", 13);
+	ret = printf("%-4.0f", f);
+	printf("| (%d)\n", ret);
+
+	write(1, "   printf : |", 13);
+	ret = printf("%-4.1f", f);
+	printf("| (%d)\n", ret);
+
+
+
+	write(1, "ft_printf : |", 13);
+	ret = ft_printf("%-4f", 0.0);
+	printf("| (%d)\n", ret);
+
+	printf("   printf : |");
+	ret = printf("%-4f", 0.0);
+	printf("| (%d)\n", ret);
+}
+
 int		main(void)
 {
 	//printf("NUM : (%d), \tFORM : (%s)\n\n", NUM, FORM_D);
 	//printf_u();
-	printf_s();
+	//printf_s();
 	//printf_a();
+	//printf_f();
+	printf_d();
 	return (0);
 }
 

@@ -48,10 +48,13 @@ int		f_to_str(t_format format, va_list *ap)
 	int		dir;
 	int		sign;
 
+	//printf(" << format width : %d >> ", format.width);
+
 	decimal = va_arg(*ap, double);
 	sign = sign_double(&decimal);
+	format.precision = (!format.flag['.']) ? 6 : format.precision;
+	//format.precision = (format.precision < 0) ? 0 : format.precision;
 	res = ft_ftoa(decimal, format.precision);
-	format.precision = (format.precision < 0) ? 0 : format.precision;
 	if (format.precision > (int)ft_strlen(res))
 		pad_char(&res, '0', format.precision - ft_strlen(res), 1);
 	if (sign == -1)
@@ -61,7 +64,7 @@ int		f_to_str(t_format format, va_list *ap)
 		pad = format.flag['0'] ? '0' : ' ';
 		dir = format.flag['-'] ? -1 : 1;
 		if (pad == '0' && dir == -1)
-			pad_char(&res, ' ', 1, -1);
+			pad_char(&res, ' ', format.width - ft_strlen(res), -1);
 		else
 			pad_char(&res, pad, format.width - ft_strlen(res), dir);
 	}
