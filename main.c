@@ -110,6 +110,17 @@ void	printf_f(void)
 	printf("| (%d)\n", ret);
 }
 
+void	printf_n(void)
+{
+	int	n;
+	int	ret;
+
+	n = -1;
+	ret = printf("-->|%%-4.%n|<--", &n);
+	ft_printf("\n\nn : -->|%d|<--\n", n);
+	ft_printf("\nret : -->|%d|<--\n", ret);
+}
+
 int		main(void)
 {
 	//printf("NUM : (%d), \tFORM : (%s)\n\n", NUM, FORM_D);
@@ -117,7 +128,8 @@ int		main(void)
 	//printf_s();
 	//printf_a();
 	//printf_f();
-	printf_d();
+	//printf_d();
+	printf_n();
 	return (0);
 }
 
