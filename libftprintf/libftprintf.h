@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/22 20:09:24 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/03/10 21:09:33 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/03/10 21:44:37 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ typedef struct	s_format
 int				is_num(char c);
 int				is_flag(char c);
 int				is_type(char c);
-int				get_precision(t_format *format, int *idx, char *str, va_list *ap);
+int				get_precision(t_format *format, int *idx, char *str, \
+								va_list *ap);
 int				get_width(t_format *format, int *idx, char *str, va_list *ap);
 int				pad_char(char **res, char c, int len, int dir);
 int				print_buf(char **buf);
