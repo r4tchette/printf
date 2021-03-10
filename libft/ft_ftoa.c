@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/12 14:27:44 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/03/10 21:13:52 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/03/10 22:05:38 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ char			*ft_ftoa(double decimal, int precision)
 
 	init(&precision, &buf, &integer, &decimal);
 	idx = 0;
-	while(idx < precision)
+	while (idx < precision)
 	{
 		decimal *= 10.0;
 		buf[idx++] = (int)decimal + '0';
