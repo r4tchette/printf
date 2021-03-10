@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/22 20:09:24 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/03/10 21:09:34 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/03/10 21:50:46 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	get_precision(t_format *format, int *idx, char *str, va_list *ap)
 		i++;
 	}
 	else if (is_num(str[i]))
-		while(is_num(str[i]) && str[i])
+		while (is_num(str[i]) && str[i])
 		{
 			precision *= 10;
 			precision += str[i] - '0';
