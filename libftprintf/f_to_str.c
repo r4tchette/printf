@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 21:08:57 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/03/10 21:09:37 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/03/10 21:48:28 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,12 @@ static int	sign_double(double *decimal)
 	return (sign);
 }
 
-static int	relocate_sign(char **str)
+static int	relocate_sign(char **str, int sign)
 {
 	int		i;
 
+	if (sign != -1)
+		return (0);
 	i = 0;
 	while ((*str)[i])
 	{
@@ -60,12 +62,9 @@ int		f_to_str(t_format format, va_list *ap)
 	int		dir;
 	int		sign;
 
-	//printf(" << format width : %d >> ", format.width);
-
 	decimal = va_arg(*ap, double);
 	sign = sign_double(&decimal);
 	format.precision = (!format.flag['.']) ? 6 : format.precision;
-	//format.precision = (format.precision < 0) ? 0 : format.precision;
 	res = ft_ftoa(decimal, format.precision);
 	if (format.precision > (int)ft_strlen(res))
 		pad_char(&res, '0', format.precision - ft_strlen(res), 1);
@@ -80,7 +79,6 @@ int		f_to_str(t_format format, va_list *ap)
 		else
 			pad_char(&res, pad, format.width - ft_strlen(res), dir);
 	}
-	if (sign == -1)
-		relocate_sign(&res);
+	relocate_sign(&res, sign);
 	return (print_buf(&res));
 }
