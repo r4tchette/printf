@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/12 14:27:44 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/03/10 21:10:58 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/03/10 21:13:52 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,12 @@ static int		round_up(char *buf, int idx)
 	return (1);
 }
 
-static void		init(int *precision, char **buf, int *integer, double *decimal, int *idx)
+static void		init(int *precision, char **buf, int *integer, double *decimal)
 {
 	*precision = (*precision < 0) ? 6 : *precision;
 	*buf = ft_calloc(*precision + 1, sizeof(char));
 	*integer = (int)(*decimal);
 	*decimal -= (int)(*decimal);
-	*idx = 0;
 }
 
 char			*ft_ftoa(double decimal, int precision)
@@ -75,7 +74,8 @@ char			*ft_ftoa(double decimal, int precision)
 	int		integer;
 	int		idx;
 
-	init(&precision, &buf, &integer, &decimal, &idx);
+	init(&precision, &buf, &integer, &decimal);
+	idx = 0;
 	while(idx < precision)
 	{
 		decimal *= 10.0;
