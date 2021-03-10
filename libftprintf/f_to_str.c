@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 21:08:57 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/03/10 21:48:28 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/03/10 21:53:17 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int	relocate_sign(char **str, int sign)
 	return (0);
 }
 
-int		f_to_str(t_format format, va_list *ap)
+int			f_to_str(t_format format, va_list *ap)
 {
 	double	decimal;
 	char	*res;
