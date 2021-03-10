@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/22 21:53:28 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/03/10 21:10:57 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/03/10 21:18:51 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ char	convert_to_hex(unsigned int n)
 		return (n + '0');
 	return (n - 10 + 'a');
 }
-
 
 char	*ft_ptoa(long long ptr, int precision)
 {
