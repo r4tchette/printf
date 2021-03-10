@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 21:08:54 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/03/10 21:27:19 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/03/10 21:59:39 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,27 +55,22 @@ static int	relocate_sign(char **str, t_format format, int sign)
 	char	sig;
 	int		i;
 
-	if (!(sign = make_sign(format, sign)))
+	if (!(sig = make_sign(format, sign)))
 		return (0);
-	while ((*str)[i])
-	{
+	i = -1;
+	while ((*str)[++i])
 		if ((*str)[i] == '-')
 			return (1);
 		else if ((*str)[i] == '0')
 		{
-			(*str)[i++] = '-';
-			while ((*str)[i])
-			{
+			(*str)[i] = '-';
+			while ((*str)[++i])
 				if ((*str)[i] == '-')
 				{
 					(*str)[i] = '0';
 					return (2);
 				}
-				i++;
-			}
 		}
-		i++;
-	}
 	return (0);
 }
 
