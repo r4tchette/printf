@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 21:09:16 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/03/10 21:09:29 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/03/10 21:52:56 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,14 @@ int	u_to_str(t_format format, va_list *ap)
 		format.flag['.'] = 0;
 		format.precision = 0;
 	}
-	res = (!num && format.flag['.']) ? ft_calloc(1, sizeof(char)) : ft_utoa(num);
+	res = (!num && format.flag['.']) \
+		? ft_calloc(1, sizeof(char)) : ft_utoa(num);
 	if (format.precision > (int)ft_strlen(res))
 		pad_char(&res, '0', format.precision - ft_strlen(res), 1);
 	if (format.width > (int)ft_strlen(res))
 	{
-		pad = (format.flag['0'] && !format.flag['-'] && !format.flag['.'] ? '0' : ' ');
+		pad = (format.flag['0'] && !format.flag['-'] && !format.flag['.'] \
+				? '0' : ' ');
 		dir = (format.flag['-'] ? -1 : 1);
 		pad_char(&res, pad, format.width - ft_strlen(res), dir);
 	}
