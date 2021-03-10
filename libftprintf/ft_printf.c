@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 13:44:30 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/03/10 21:09:35 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/03/10 22:04:13 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,24 +88,24 @@ int			ft_printf(char *str, ...)
 	int		len;
 	int		ret;
 
+	va_start(ap, str);
 	len = 0;
 	i = -1;
-	va_start(ap, str);
 	while (str[++i])
-	{
 		if (str[i] == '%')
 		{
 			ret = print_format(&str[i + 1], &ap, len);
 			if (ret < 0)
 				return (-1);
 			len += ret;
-			while (!is_type(str[++i]));
+			while (!is_type(str[i + 1]))
+				i++;
+			i++;
 		}
 		else
 		{
 			write(1, str + i, 1);
 			len++;
 		}
-	}
 	return (len);
 }
