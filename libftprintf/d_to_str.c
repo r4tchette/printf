@@ -6,7 +6,7 @@
 /*   By: yeonkim <yeonkim@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/10 21:08:54 by yeonkim           #+#    #+#             */
-/*   Updated: 2021/03/10 21:09:37 by yeonkim          ###   ########.fr       */
+/*   Updated: 2021/03/10 21:27:19 by yeonkim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,23 +35,28 @@ static int	sign_int(char **str)
 	return (sign);
 }
 
+static char	make_sign(t_format format, int sign)
+{
+	if (sign == -1)
+		return ('-');
+	else
+	{
+		if (format.flag['+'])
+			return ('+');
+		else if (format.flag[' '])
+			return (' ');
+		else
+			return (0);
+	}
+}
+
 static int	relocate_sign(char **str, t_format format, int sign)
 {
 	char	sig;
 	int		i;
 
-	if (sign == -1)
-		sig = '-';
-	else
-	{
-		if (format.flag['+'])
-			sig = '+';
-		else if (format.flag[' '])
-			sig = ' ';
-		else
-			return (0);
-	}
-	i = 0;
+	if (!(sign = make_sign(format, sign)))
+		return (0);
 	while ((*str)[i])
 	{
 		if ((*str)[i] == '-')
@@ -93,7 +98,8 @@ int			d_to_str(t_format format, va_list *ap)
 	int		num;
 
 	num = va_arg(*ap, int);
-	res = (num == 0 && format.flag['.'] && format.precision == 0) ? ft_calloc(1, sizeof(char)) : ft_itoa(num);
+	res = (num == 0 && format.flag['.'] && format.precision == 0) ? \
+		ft_calloc(1, sizeof(char)) : ft_itoa(num);
 	sign = sign_int(&res);
 	pad = (format.flag['.'] && format.precision > 0) ? '0' : ' ';
 	if (format.precision > (int)ft_strlen(res))
@@ -103,7 +109,8 @@ int			d_to_str(t_format format, va_list *ap)
 	prepend_sign(&res, format, sign);
 	if (format.width > (int)ft_strlen(res))
 	{
-		pad = (format.flag['0'] && !format.flag['-'] && pad == ' ' && !(format.flag['.'] && format.precision == 0)) ? '0' : ' ';
+		pad = (format.flag['0'] && !format.flag['-'] && pad == ' ' && \
+			!(format.flag['.'] && format.precision == 0)) ? '0' : ' ';
 		dir = (format.flag['-']) ? -1 : 1;
 		pad_char(&res, pad, format.width - ft_strlen(res), dir);
 	}
