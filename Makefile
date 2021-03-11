@@ -13,8 +13,6 @@ SRC =	libft/ft_bzero.c\
 		libftprintf/a_to_str.c\
 		libftprintf/c_to_str.c\
 		libftprintf/d_to_str.c\
-		libftprintf/f_to_str.c\
-		libftprintf/n_to_str.c\
 		libftprintf/p_to_str.c\
 		libftprintf/s_to_str.c\
 		libftprintf/u_to_str.c\
